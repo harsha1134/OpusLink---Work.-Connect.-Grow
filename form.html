@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpusLink Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1e40af;
+    }
+    .dashboard {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    .dashboard h2 {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box" id="loginBox">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Enter username">
+    <input type="password" id="password" placeholder="Enter password">
+    
+    <select id="role">
+      <option value="JobSeeker">Job Seeker</option>
+      <option value="Employer">Employer</option>
+      <option value="Admin">Admin</option>
+    </select>
+    
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- Job Seeker Dashboard -->
+  <div class="dashboard" id="jobSeekerDash">
+    <h2>Welcome, Job Seeker!</h2>
+    <p>Browse and apply for jobs.</p>
+  </div>
+
+  <!-- Employer Dashboard -->
+  <div class="dashboard" id="employerDash">
+    <h2>Welcome, Employer!</h2>
+    <p>Post jobs and manage applicants.</p>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div class="dashboard" id="adminDash">
+    <h2>Welcome, Admin!</h2>
+    <p>Manage users, jobs, and escrow payments.</p>
+  </div>
+
+  <script>
+    function login() {
+      let username = document.getElementById("username").value;
+      let password = document.getElementById("password").value;
+      let role = document.getElementById("role").value;
+
+      if (username === "" || password === "") {
+        alert("Please enter username and password!");
+        return;
+      }
+
+      // Hide login form
+      document.getElementById("loginBox").style.display = "none";
+
+      // Show dashboard based on role
+      if (role === "JobSeeker") {
+        document.getElementById("jobSeekerDash").style.display = "block";
+      } else if (role === "Employer") {
+        document.getElementById("employerDash").style.display = "block";
+      } else if (role === "Admin") {
+        document.getElementById("adminDash").style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>

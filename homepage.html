@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OpusLink — Work. Connect. Grow.</title>
+
+  <!-- Google font (optional) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #F8FAFF;
+      --card: #ffffff;
+      --primary: #1E3A8A; /* deep blue */
+      --accent: #F97316;  /* vibrant orange */
+      --muted: #6B7280;
+      --success: #10B981;
+      --radius: 12px;
+      --glass: rgba(255,255,255,0.75);
+      --max-width: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #F8FAFF 0%, #FFF 100%);
+      color:#0F172A;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding: 28px 18px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+      background:transparent;
+    }
+
+    /* Header */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:22px;
+    }
+    .brand {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo {
+      width:52px;
+      height:52px;
+      border-radius:10px;
+      background:linear-gradient(135deg,var(--primary),#0F62FE);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-weight:700;
+      box-shadow: 0 8px 20px rgba(30,58,138,0.12);
+    }
+    .brand h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:0.2px;
+    }
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+    nav{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .nav-link{color:var(--primary);text-decoration:none;font-weight:600}
+    .btn-primary{
+      background:var(--accent);
+      color:white;
+      border:none;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: 0 6px 16px rgba(249,115,22,0.18);
+    }
+    .btn-ghost{
+      background:transparent;
+      color:var(--primary);
+      border:2px solid rgba(30,58,138,0.06);
+      padding:8px 12px;
+      border-radius:10px;
+      cursor:pointer;
+    }
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:22px;
+      align-items:center;
+      margin-bottom:28px;
+    }
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
+      padding:28px;
+      border-radius:var(--radius);
+      box-shadow: 0 10px 30px rgba(16,24,40,0.06);
+    }
+    .hero h2{
+      margin:0 0 10px 0;
+      font-size:28px;
+      line-height:1.05;
+      color:var(--primary);
+    }
+    .hero p{margin:0 0 18px 0;color:var(--muted)}
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+    .role-btn{
+      padding:10px 14px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);
+      background:white;font-weight:600;cursor:pointer;
+    }
+
+    /* Search bar */
+    .search-bar{
+      display:flex;gap:12px;margin-top:18px;
+      align-items:center;
+      background:var(--card);
+      padding:10px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.04);
+    }
+    .search-bar input[type="text"]{
+      border:0;outline:none;font-size:15px;width:100%;
+    }
+    .search-btn{
+      background:var(--primary);color:white;padding:10px 12px;border-radius:10px;border:0;cursor:pointer;
+    }
+
+    /* Side card */
+    .side-card{
+      background:linear-gradient(180deg,#fff,#fff);
+      padding:18px;border-radius:12px;box-shadow: 0 8px 30px rgba(16,24,40,0.04);
+    }
+    .quick-stats{display:flex;gap:12px;align-items:center;justify-content:space-between}
+    .stat{
+      flex:1;text-align:center;padding:12px;border-radius:10px;background:linear-gradient(90deg,rgba(30,58,138,0.05),rgba(249,115,22,0.02))
+    }
+    .stat h3{margin:0;color:var(--primary)}
+    .stat p{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+    /* Categories grid */
+    .categories{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:14px;margin-bottom:18px;
+    }
+    .cat{
+      display:flex;gap:12px;align-items:center;background:var(--card);padding:12px;border-radius:12px;
+      box-shadow: 0 6px 18px rgba(16,24,40,0.04);cursor:pointer;
+    }
+    .cat .icon{
+      width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;
+      background:linear-gradient(135deg,var(--primary),#0F62FE)
+    }
+    .cat h4{margin:0;font-size:15px}
+    .cat p{margin:2px 0 0 0;color:var(--muted);font-size:12px}
+
+    /* Featured jobs */
+    .jobs{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;
+    }
+    .job-card{
+      background:var(--card);padding:14px;border-radius:12px;box-shadow:0 8px 20px rgba(2,6,23,0.04);
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .job-head{display:flex;justify-content:space-between;align-items:center}
+    .job-title{font-weight:700;color:var(--primary)}
+    .job-meta{font-size:13px;color:var(--muted)}
+    .job-apply{margin-top:auto;display:flex;justify-content:space-between;align-items:center}
+    .apply-btn{background:var(--accent);color:white;padding:8px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+
+    /* Why OpusLink */
+    .reasons{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px}
+    .reason{background:linear-gradient(90deg,rgba(249,115,22,0.06),rgba(30,58,138,0.03));padding:12px;border-radius:10px}
+
+    /* Footer */
+    footer{margin-top:26px;padding:16px;border-radius:12px;background:linear-gradient(180deg,#fff,#fff);display:flex;justify-content:space-between;align-items:center}
+    footer p{margin:0;color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr}
+      header{flex-direction:column;align-items:flex-start;gap:12px}
+      .brand h1{font-size:16px}
+    }
+    @media (max-width:480px){
+      .logo{width:46px;height:46px;font-size:16px}
+      .hero h2{font-size:22px}
+      .stat{padding:10px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <div class="brand" aria-label="OpusLink brand">
+        <div class="logo" aria-hidden="true">OL</div>
+        <div>
+          <h1>OpusLink</h1>
+          <p>Work. Connect. Grow.</p>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a class="nav-link" href="#categories">Categories</a>
+        <a class="nav-link" href="#how">How it Works</a>
+        <button class="btn-ghost" onclick="alert('Post job (demo)')">Post a Job</button>
+        <button class="btn-primary" onclick="alert('Sign in (demo)')">Sign In</button>
+      </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-card" role="region" aria-label="hero">
+        <h2>Find Jobs. Hire Talent. Anytime. Anywhere.</h2>
+        <p>OpusLink connects job seekers and providers across all categories — from internships to daily wage work. Fast, verified, and local-first.</p>
+
+        <div class="cta-row">
+          <button class="role-btn" onclick="alert('I am a Job Seeker')">I’m a Job Seeker</button>
+          <button class="role-btn" onclick="alert('I am an Employer')">I’m an Employer</button>
+          <button class="role-btn" onclick="alert('Browse gigs')">Browse Gigs</button>
+        </div>
+
+        <div class="search-bar" style="margin-top:16px" role="search" aria-label="job search">
+          <input type="text" placeholder="Search jobs, categories, locations..." aria-label="Search input">
+          <button class="search-btn" aria-label="Search">Search</button>
+        </div>
+
+        <div style="margin-top:16px;color:var(--muted);font-size:13px">Trending: <strong>Delivery</strong> · <strong>Event Helper</strong> · <strong>Internships</strong></div>
+      </div>
+
+      <aside class="side-card" aria-label="quick stats">
+        <div style="margin-bottom:12px"><strong>Quick Snapshot</strong></div>
+        <div class="quick-stats">
+          <div class="stat">
+            <h3>120K+</h3>
+            <p>Jobs listed</p>
+          </div>
+          <div class="stat">
+            <h3>60K+</h3>
+            <p>Active seekers</p>
+          </div>
+          <div class="stat">
+            <h3>18K+</h3>
+            <p>Daily gigs</p>
+          </div>
+        </div>
+
+        <div style="margin-top:16px">
+          <h4 style="margin:0 0 8px 0">Post quick job</h4>
+          <p style="margin:0 0 12px 0;color:var(--muted);font-size:13px">Create a short shift/post in under a minute for immediate hires.</p>
+          <button class="btn-primary" style="width:100%" onclick="alert('Post Quick Job demo')">Post Now</button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Categories -->
+    <section id="categories">
+      <h3 style="color:var(--primary);margin:0 0 12px 0">Explore Categories</h3>
+      <div class="categories" aria-label="job categories">
+        <div class="cat" onclick="alert('Open Tech Jobs')">
+          <div class="icon">💻</div>
+          <div>
+            <h4>Tech Jobs</h4>
+            <p>Developers, Designers, Testers</p>
+          </div>
+        </div>
+
+        <div class="cat" onclick="alert('Open Non-Tech Jobs')">
+          <div class="icon" style="background:linear-gradient(135deg,#0F62FE,#1E3A8A)">📊</div>
+          <div>
+            <h4>Non-Tech Corporate</h4>
+            <p>Sales, Marketing, Admin</p>
+          </div>
+        </div>
+
+        <div class="cat" onclick="alert('Open Blue-Collar Jobs')">
+          <div class="icon" style="background:linear-gradient(135deg,#F97316,#FFB86B)">🔧</div>
+          <div>
+            <h4>Blue-Collar</h4>
+            <p>Plumbers, Electricians, Drivers</p>
+          </div>
+        </div>
+
+        <div class="cat" onclick="alert('Open Freelance Jobs')">
+          <div class="icon" style="background:linear-gradient(135deg,#6D28D9,#7C3AED)">🎭</div>
+          <div>
+            <h4>Freelance / Gigs</h4>
+            <p>Writers, Designers, Tutors</p>
+          </div>
+        </div>
+
+        <div class="cat" onclick="alert('Open Student Jobs')">
+          <div class="icon" style="background:linear-gradient(135deg,#10B981,#34D399)">🎓</div>
+          <div>
+            <h4>Students & Internships</h4>
+            <p>Fest roles, Interns</p>
+          </div>
+        </div>
+
+        <div class="cat" onclick="alert('Open Daily Wage Jobs')">
+          <div class="icon" style="background:linear-gradient(135deg,#EF4444,#FB7185)">🛠️</div>
+          <div>
+            <h4>Daily / Weekly Wages</h4>
+            <p>Helpers, Construction, Delivery</p>
+          </div>
+        </div>
+
+        <div class="cat" onclick="alert('Open Hospitality Jobs')">
+          <div class="icon" style="background:linear-gradient(135deg,#FF8A65,#F97316)">🍴</div>
+          <div>
+            <h4>Hospitality & Retail</h4>
+            <p>Waiters, Cashiers, Baristas</p>
+          </div>
+        </div>
+
+        <div class="cat" onclick="alert('Open Agriculture Jobs')">
+          <div class="icon" style="background:linear-gradient(135deg,#65A30D,#86EFAC)">🌱</div>
+          <div>
+            <h4>Agriculture & Seasonal</h4>
+            <p>Farm helpers, Harvesting</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured jobs -->
+    <section style="margin-top:20px">
+      <h3 style="color:var(--primary);margin:0 0 12px 0">Featured & Nearby Jobs</h3>
+      <div class="jobs" aria-live="polite">
+        <article class="job-card" role="article" aria-label="Web developer job">
+          <div class="job-head">
+            <div>
+              <div class="job-title">Frontend Developer</div>
+              <div class="job-meta">Startup • Remote • ₹20k/month</div>
+            </div>
+            <div style="text-align:right;color:var(--muted);font-size:12px">Full-time</div>
+          </div>
+          <div style="font-size:14px;color:var(--muted)">React.js, CSS, 6 months contract</div>
+          <div class="job-apply">
+            <div style="font-size:13px;color:var(--muted)">Posted 2 days ago</div>
+            <button class="apply-btn" onclick="alert('Apply demo')">Apply</button>
+          </div>
+        </article>
+
+        <article class="job-card" role="article" aria-label="Delivery partner job">
+          <div class="job-head">
+            <div>
+              <div class="job-title">Delivery Partner</div>
+              <div class="job-meta">Local Mart • Nearby • ₹600/day</div>
+            </div>
+            <div style="text-align:right;color:var(--muted);font-size:12px">Daily</div>
+          </div>
+          <div style="font-size:14px;color:var(--muted)">Bike required. Immediate join.</div>
+          <div class="job-apply">
+            <div style="font-size:13px;color:var(--muted)">12 spots left</div>
+            <button class="apply-btn" onclick="alert('Apply demo')">Apply</button>
+          </div>
+        </article>
+
+        <article class="job-card" role="article" aria-label="Event helper job">
+          <div class="job-head">
+            <div>
+              <div class="job-title">Event Helper (Weekend)</div>
+              <div class="job-meta">Event Agency • City Hall • ₹900/day</div>
+            </div>
+            <div style="text-align:right;color:var(--muted);font-size:12px">Temporary</div>
+          </div>
+          <div style="font-size:14px;color:var(--muted)">Setup & teardown, 10 AM - 8 PM</div>
+          <div class="job-apply">
+            <div style="font-size:13px;color:var(--muted)">Apply by tomorrow</div>
+            <button class="apply-btn" onclick="alert('Apply demo')">Apply</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Why OpusLink -->
+    <section style="margin-top:22px">
+      <h3 style="color:var(--primary);margin:0 0 10px 0">Why OpusLink?</h3>
+      <div class="reasons">
+        <div class="reason">
+          <strong>Instant Hiring</strong>
+          <p style="margin:6px 0 0;color:var(--muted)">Post shifts & find workers within minutes.</p>
+        </div>
+        <div class="reason">
+          <strong>Verified Profiles</strong>
+          <p style="margin:6px 0 0;color:var(--muted)">ID & skill verification for trust.</p>
+        </div>
+        <div class="reason">
+          <strong>Secure Payments</strong>
+          <p style="margin:6px 0 0;color:var(--muted)">Escrow & instant UPI payouts.</p>
+        </div>
+        <div class="reason">
+          <strong>Local & Multilingual</strong>
+          <p style="margin:6px 0 0;color:var(--muted)">Regional language support to reach everyone.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>© <strong>OpusLink</strong> — Work. Connect. Grow.</p>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="#" style="text-decoration:none;color:var(--muted)">About</a>
+        <a href="#" style="text-decoration:none;color:var(--muted)">Careers</a>
+        <a href="#" style="text-decoration:none;color:var(--muted)">Contact</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- small JS just for demo alerts (remove in production) -->
+  <script>
+    // Demo only: replace alerts with real navigation in your app
+    document.querySelectorAll('.cat').forEach(c=>c.addEventListener('click', ()=>{}));
+  </script>
+</body>
+</html>

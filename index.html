@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpusLink Prototype</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f8f8f8; }
+    h1 { color: #333; }
+    .section { background: white; padding: 15px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);}
+    .job { border-bottom: 1px solid #ddd; padding: 8px 0; }
+    .wallet { display: flex; gap: 20px; }
+    .chat-box { border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto; margin-bottom: 10px; background: #fafafa; }
+    .msg { margin: 4px 0; }
+    .msg span { font-weight: bold; }
+    button { padding: 5px 10px; margin-top: 5px; }
+    input, select { padding: 5px; margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <h1>OpusLink — Job & Wallet Prototype</h1>
+
+  <!-- Job Listings -->
+  <div class="section">
+    <h2>Job Listings</h2>
+    <label>Filter by Category: 
+      <select id="filterCategory">
+        <option value="">All</option>
+        <option value="Tech">Tech</option>
+        <option value="Daily Wage">Daily Wage</option>
+        <option value="Hospitality">Hospitality</option>
+      </select>
+    </label>
+    <label>Filter by Location: 
+      <select id="filterLocation">
+        <option value="">All</option>
+        <option value="Hyderabad">Hyderabad</option>
+        <option value="Tirupati">Tirupati</option>
+        <option value="Chennai">Chennai</option>
+      </select>
+    </label>
+    <div id="jobList"></div>
+  </div>
+
+  <!-- Wallet Section -->
+  <div class="section">
+    <h2>Escrow Wallets</h2>
+    <div class="wallet">
+      <div>
+        <h3>Employer Wallet</h3>
+        Balance: ₹<span id="employerBal">1000</span><br>
+        <button onclick="depositEscrow(101,202,500,11)">Deposit ₹500 for Job #11</button>
+      </div>
+      <div>
+        <h3>Worker Wallet</h3>
+        Balance: ₹<span id="workerBal">0</span>
+      </div>
+    </div>
+    <h3>System Actions</h3>
+    <button onclick="releaseFunds(11)">Release Funds (Job #11)</button>
+    <button onclick="refundFunds(11)">Refund Employer (Job #11)</button>
+  </div>
+
+  <!-- Chat Section -->
+  <div class="section">
+    <h2>Job Chat (Job #11)</h2>
+    <div class="chat-box" id="chatBox"></div>
+    <input id="msgInput" type="text" placeholder="Type message...">
+    <select id="sender">
+      <option value="Employer">Employer</option>
+      <option value="Worker">Worker</option>
+    </select>
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+<script>
+  // --- Data Setup ---
+  let employerBal = 1000, workerBal = 0, escrow = {};
+  let jobs = [
+    {id:11, title:"Web Developer Needed", category:"Tech", location:"Hyderabad"},
+    {id:12, title:"Mason Work", category:"Daily Wage", location:"Tirupati"},
+    {id:13, title:"Hotel Receptionist", category:"Hospitality", location:"Chennai"},
+  ];
+  let messages = JSON.parse(localStorage.getItem("messages")) || [];
+
+  // --- Job Listing with Filters ---
+  function renderJobs() {
+    let c = document.getElementById("filterCategory").value;
+    let l = document.getElementById("filterLocation").value;
+    let list = document.getElementById("jobList");
+    list.innerHTML = "";
+    jobs.filter(j => (!c||j.category===c) && (!l||j.location===l))
+        .forEach(j=>{
+          list.innerHTML += `<div class="job"><b>${j.title}</b> — ${j.category} @ ${j.location}</div>`;
+        });
+  }
+  document.getElementById("filterCategory").onchange = renderJobs;
+  document.getElementById("filterLocation").onchange = renderJobs;
+  renderJobs();
+
+  // --- Wallet Functions ---
+  function depositEscrow(emp, worker, amount, jobId){
+    if (employerBal>=amount){
+      employerBal -= amount;
+      escrow[jobId] = (escrow[jobId]||0) + amount;
+      updateBalances();
+      alert("Deposited ₹"+amount+" in escrow for Job #"+jobId);
+    } else alert("Insufficient employer balance!");
+  }
+  function releaseFunds(jobId){
+    if(escrow[jobId]){
+      workerBal += escrow[jobId];
+      escrow[jobId]=0;
+      updateBalances();
+      alert("Funds released to worker!");
+    }
+  }
+  function refundFunds(jobId){
+    if(escrow[jobId]){
+      employerBal += escrow[jobId];
+      escrow[jobId]=0;
+      updateBalances();
+      alert("Funds refunded to employer!");
+    }
+  }
+  function updateBalances(){
+    document.getElementById("employerBal").innerText=employerBal;
+    document.getElementById("workerBal").innerText=workerBal;
+  }
+
+  // --- Chat Functions ---
+  function renderChat(){
+    let box=document.getElementById("chatBox");
+    box.innerHTML="";
+    messages.forEach(m=>{
+      box.innerHTML += `<div class="msg"><span>${m.sender}:</span> ${m.text}</div>`;
+    });
+    localStorage.setItem("messages", JSON.stringify(messages));
+  }
+  function sendMessage(){
+    let text=document.getElementById("msgInput").value;
+    let sender=document.getElementById("sender").value;
+    if(text.trim()!==""){
+      messages.push({sender,text});
+      document.getElementById("msgInput").value="";
+      renderChat();
+    }
+  }
+  renderChat();
+</script>
+</body>
+</html>
