@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Pending - OpusLink</title>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: white;
+            font-family: system-ui;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            text-align: center;
+            max-width: 500px;
+        }
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #facc15;
+            margin-bottom: 16px;
+        }
+        p {
+            color: #a0a0a0;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        .status {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #f59e0b;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        .btn {
+            background: #facc15;
+            color: black;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 8px;
+        }
+        .btn:hover {
+            background: #eab308;
+        }
+        .btn-ghost {
+            background: transparent;
+            color: #a0a0a0;
+            border: 1px solid #333;
+        }
+        .btn-ghost:hover {
+            background: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">⏳</div>
+        <h1>Account Verification Pending</h1>
+        <p>Your account is currently under review by our admin team. This process usually takes 24-48 hours.</p>
+        
+        <div class="status">
+            <strong>Status:</strong> Awaiting Verification
+        </div>
+        
+        <p>You'll receive access to all platform features once your verification is complete.</p>
+        
+        <div>
+            <button class="btn" onclick="window.location.href='index.html'">Return to Home</button>
+            <button class="btn btn-ghost" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            sessionStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        }
+
+        // Check if user is actually pending verification
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+        if (currentUser.isVerified) {
+            window.location.href = 'dashboard.html';
+        }
+        if (!currentUser.id) {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

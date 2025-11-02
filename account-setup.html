@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-translate="account_setup">OpusLink | Account Setup</title>
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="js/language-manager.js"></script>
+  <style>
+    /* Language Toggle Button - Fixed to viewport top right */
+    .language-toggle-fixed {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10000;
+    }
+
+    .btn-language {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 140px;
+        justify-content: center;
+    }
+
+    .btn-language:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+    }
+
+    .btn-language:active {
+        transform: translateY(0);
+    }
+
+    /* For mobile responsiveness */
+    @media (max-width: 768px) {
+        .language-toggle-fixed {
+            top: 15px;
+            right: 15px;
+        }
+        
+        .btn-language {
+            padding: 10px 16px;
+            font-size: 13px;
+            min-width: 120px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .language-toggle-fixed {
+            top: 10px;
+            right: 10px;
+        }
+        
+        .btn-language {
+            padding: 8px 14px;
+            font-size: 12px;
+            min-width: 110px;
+        }
+    }
+  </style>
+</head>
+<body>
+  <!-- Language Toggle Button - FIXED POSITION AT TOP RIGHT -->
+  <div class="language-toggle-fixed">
+    <button id="langToggleBtn" class="btn-language" onclick="toggleLanguage()">
+      🌐 <span data-translate="toggle_language">Toggle Telugu</span>
+    </button>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-left">
+      <h1 class="brand">Opus<span>Link</span></h1>
+      <p class="tagline" data-translate="step_1_create_account">Step 1: Create Your Account</p>
+      <div class="progress-bar">
+        <div class="progress-step active">1</div>
+        <div class="progress-step">2</div>
+        <div class="progress-step">3</div>
+        <div class="progress-step">4</div>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <div class="form-box">
+        <h2 data-translate="account_setup">Account Setup</h2>
+        <p class="subtitle" data-translate="enter_basic_details">Enter your basic details to continue</p>
+
+        <form id="accountForm">
+          <div class="form-group">
+            <label for="fullName" data-translate="full_name">Full Name</label>
+            <input type="text" id="fullName" data-translate-placeholder="full_name_placeholder" placeholder="John Doe" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email" data-translate="email_address">Email</label>
+            <input type="email" id="email" data-translate-placeholder="email_placeholder" placeholder="example@email.com" required>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="password" data-translate="password">Password</label>
+              <input type="password" id="password" data-translate-placeholder="password_placeholder" placeholder="********" required minlength="6">
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword" data-translate="confirm_password">Confirm Password</label>
+              <input type="password" id="confirmPassword" data-translate-placeholder="password_placeholder" placeholder="********" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" data-translate="phone_number">Phone Number</label>
+            <input type="tel" id="phone" data-translate-placeholder="phone_placeholder" placeholder="+91 9876543210">
+          </div>
+
+          <button type="submit" class="btn" data-translate="next">Next →</button>
+        </form>
+
+        <div class="login-link">
+          <span data-translate="already_have_account">Already have an account?</span> <a href="login.html" data-translate="login">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    // Add missing translations
+    if (window.languageManager) {
+      const additionalTranslations = {
+        'step_1_create_account': 'దశ 1: మీ ఖాతాను సృష్టించండి',
+        'account_setup': 'ఖాతా సెటప్',
+        'enter_basic_details': 'కొనసాగించడానికి మీ ప్రాథమిక వివరాలను నమోదు చేయండి',
+        'full_name_placeholder': 'జాన్ డో',
+        'confirm_password': 'పాస్వర్డ్ ని నిర్ధారించండి',
+        'phone_placeholder': '+91 9876543210',
+        'next': 'తదుపరి →',
+        'full_name': 'పూర్తి పేరు',
+        'phone_number': 'ఫోన్ నంబర్'
+      };
+      Object.assign(languageManager.teluguMap, additionalTranslations);
+    }
+
+    const form = document.getElementById('accountForm');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if(password !== confirmPassword){
+        alert("Passwords do not match!");
+        return;
+      }
+
+      if(password.length < 6){
+        alert("Password must be at least 6 characters long!");
+        return;
+      }
+
+      // Store basic account info
+      const accountData = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        password: password,
+        phone: document.getElementById('phone').value,
+        role: new URLSearchParams(window.location.search).get('role')
+      };
+
+      sessionStorage.setItem('tempAccount', JSON.stringify(accountData));
+
+      // redirect to role-specific profile page
+      if(accountData.role === 'employer'){
+        window.location.href = 'employer-profile.html';
+      } else {
+        window.location.href = 'worker-profile.html';
+      }
+    });
+
+    // Check if role is present
+    const params = new URLSearchParams(window.location.search);
+    const role = params.get('role');
+    if (!role) {
+      alert("No role selected! Redirecting to role selection.");
+      window.location.href = 'sliding.html';
+    }
+  </script>
+</body>
+</html>

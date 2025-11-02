@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>OpusLink — Employer Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/dashboard.css"> 
+  <link rel="stylesheet" href="css/components.css">
+  <script src="js/language-manager.js"></script>
+</head>
+<body>
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">OL</div>
+        <div>
+          <div class="title">OpusLink</div>
+          <div class="subtitle" data-translate="employer_panel">Employer Panel</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#" class="nav-link active" data-section="overview">
+          <span>📊</span> <span data-translate="overview">Overview</span>
+        </a>
+        <a href="#" class="nav-link" data-section="browse-workers">
+          <span>👥</span> <span data-translate="browse_workers">Browse Workers</span>
+        </a>
+        <a href="#" class="nav-link" data-section="post-job">
+          <span>📝</span> <span data-translate="post_job">Post Job</span>
+        </a>
+        <a href="#" class="nav-link" data-section="manage-jobs">
+          <span>💼</span> <span data-translate="manage_jobs">Manage Jobs</span>
+        </a>
+        <a href="#" class="nav-link" data-section="notifications-main">
+          <span>🔔</span> <span data-translate="notifications">Notifications</span>
+        </a>
+        <a href="#" class="nav-link" data-section="applications">
+          <span>👥</span> <span data-translate="applications">Applications</span>
+        </a>
+        <a href="#" class="nav-link" data-section="active-agreements">
+          <span>📝</span> <span data-translate="active_agreements">Active Agreements</span>
+        </a>
+        <a href="#" class="nav-link" data-section="pending-work">
+          <span>⏳</span> <span data-translate="pending_work">Pending Work</span>
+        </a>
+        <a href="#" class="nav-link" data-section="payment-history">
+          <span>💰</span> <span data-translate="payment_history">Payment History</span>
+        </a>
+       <!-- <a href="#" class="nav-link" data-section="messages">
+          <span>💬</span> <span data-translate="messages">Messages</span>
+        </a> -->
+        <a href="#" class="nav-link" data-section="profile">
+          <span>👤</span> <span data-translate="profile">Profile</span>
+        </a>
+        <a href="#" class="nav-link" data-section="feedback">
+          <span>⭐</span> <span data-translate="feedback_reviews">Feedback & Reviews</span>
+        </a>
+        
+        <!-- Language Toggle in Sidebar -->
+        <a href="#" class="nav-link" id="langToggleBtn" onclick="toggleLanguage()">
+          <span>🌐</span> <span data-translate="toggle_language">Toggle Telugu</span>
+        </a>
+        
+        <a href="#" class="nav-link logout-btn">
+          <span>🚪</span> <span data-translate="logout">Logout</span>
+        </a>
+      </nav>
+
+      <div class="side-footer">
+        <div class="kv" data-translate="member_since">Member since <strong id="memberSince">2024</strong></div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main>
+      <div class="topbar">
+        <div class="searchbar">
+          <input id="globalSearch" data-translate-placeholder="search_placeholder" placeholder="Search jobs, applicants, companies..." />
+        </div>
+        
+        <button class="btn btn-ghost" onclick="EmployerDashboard.showWallet()" style="display: flex; align-items: center; gap: 8px;">
+          <span>💰</span>
+          <span id="walletBalance" data-translate="wallet">Wallet</span>
+        </button>
+        
+        <div class="user-info">
+          <div style="text-align:right;">
+            <div style="font-weight:700;" id="employerName">Loading...</div>
+            <div class="kv" id="employerEmail">Loading...</div>
+          </div>
+          <div class="avatar" id="employerAvatar">OL</div>
+        </div>
+      </div>
+
+      <!-- OVERVIEW SECTION -->
+      <section id="overview" class="dashboard-section active">
+        <div class="grid-2">
+          <div>
+            <div class="section-title" data-translate="dashboard_overview">Dashboard Overview</div>
+            <div class="stats">
+              <div class="stat card">
+                <h3 data-translate="active_jobs">Active Jobs</h3>
+                <div class="big" id="statJobs">0</div>
+                <div class="kv" data-translate="posted_jobs">Posted jobs</div>
+              </div>
+              <div class="stat card">
+                <h3 data-translate="total_applications">Total Applications</h3>
+                <div class="big" id="statApps">0</div>
+                <div class="kv" data-translate="received_applications">Received applications</div>
+              </div>
+              <div class="stat card">
+                <h3 data-translate="hired">Hired</h3>
+                <div class="big" id="statHired">0</div>
+                <div class="kv" data-translate="successful_hires">Successful hires</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="section-title" data-translate="recent_applications">Recent Applications</div>
+              <div class="applications-list" id="recentApplications">
+                <div class="empty-state">
+                  <div class="empty-state-icon">📥</div>
+                  <h3 data-translate="no_applications_yet">No applications yet</h3>
+                  <p data-translate="applications_will_appear">Applications will appear here when job seekers apply to your jobs</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <div class="section-title" data-translate="quick_actions">Quick Actions</div>
+                <button class="btn btn-primary" id="openPostJob" data-translate="post_new_job">Post New Job</button>
+              </div>
+
+              <div class="kv" data-translate="manage_listings_review_applicants">Manage your job listings and review applicants</div>
+
+              <div style="margin-top:20px;">
+                <div class="section-title" style="font-size:1rem;" data-translate="active_jobs">Active Jobs</div>
+                <div class="job-list" id="activeJobs">
+                  <div class="empty-state">
+                    <div class="empty-state-icon">💼</div>
+                    <h3 data-translate="no_active_jobs">No active jobs</h3>
+                    <p data-translate="post_first_job">Post your first job to start receiving applications</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BROWSE WORKERS SECTION -->
+      <section id="browse-workers" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="browse_job_seekers">Browse Job Seekers</div>
+          <div class="section-subtitle" data-translate="find_connect_skilled_workers">Find and connect with skilled workers</div>
+        </div>
+
+        <!-- Enhanced Search and Filters -->
+        <div class="job-filters">
+          <div class="search-box">
+            <input type="text" id="workerSearch" data-translate-placeholder="search_skills_name_category" placeholder="🔍 Search by skills, name, category, or location..." class="search-input">
+          </div>
+          
+          <div class="filter-row">
+            <select id="filterCategory" class="filter-select">
+              <option value="" data-translate="all_categories">All Categories</option>
+              <option value="Tech & Professional">Tech & Professional</option>
+              <option value="Corporate & Office">Corporate & Office</option>
+              <option value="Skilled Trades (Blue Collar)">Skilled Trades</option>
+              <option value="Daily Wage & Short-Term">Daily Wage & Short-Term</option>
+              <option value="Hospitality & Retail">Hospitality & Retail</option>
+              <option value="Freelance & Gigs">Freelance & Gigs</option>
+              <option value="Students & Internships">Students & Internships</option>
+              <option value="Household & Care Services">Household & Care</option>
+              <option value="Agriculture & Seasonal">Agriculture & Seasonal</option>
+              <option value="Healthcare & Medical">Healthcare & Medical</option>
+              <option value="Manufacturing & Industrial Labor">Manufacturing</option>
+              <option value="Government & Public Sector">Government</option>
+            </select>
+            
+            <!-- District Filter -->
+            <select id="filterDistrict" class="filter-select">
+              <option value="" data-translate="all_districts">All Districts</option>
+              <option value="Anantapur">Anantapur</option>
+              <option value="Chittoor">Chittoor</option>
+              <option value="East Godavari">East Godavari</option>
+              <option value="Guntur">Guntur</option>
+              <option value="Kadapa">Kadapa</option>
+              <option value="Krishna">Krishna</option>
+              <option value="Kurnool">Kurnool</option>
+              <option value="Prakasam">Prakasam</option>
+              <option value="Nellore">Nellore</option>
+              <option value="Srikakulam">Srikakulam</option>
+              <option value="Visakhapatnam">Visakhapatnam</option>
+              <option value="Vizianagaram">Vizianagaram</option>
+              <option value="West Godavari">West Godavari</option>
+            </select>
+            
+            <!-- City Filter -->
+            <select id="filterCity" class="filter-select" disabled>
+              <option value="" data-translate="all_cities">All Cities</option>
+            </select>
+            
+            <select id="filterExperience" class="filter-select">
+              <option value="" data-translate="all_experience_levels">All Experience Levels</option>
+              <option value="Entry">Entry Level (0-2 years)</option>
+              <option value="Mid">Mid Level (3-5 years)</option>
+              <option value="Senior">Senior Level (5+ years)</option>
+            </select>
+            
+            <button class="btn btn-primary" onclick="EmployerDashboard.searchWorkers()" data-translate="search">Search</button>
+            <button class="btn btn-ghost" onclick="EmployerDashboard.clearWorkerFilters()" data-translate="clear_filters">Clear Filters</button>
+          </div>
+          
+          <!-- Filter Status Indicator -->
+          <div id="workerFilterStatus" class="filter-status" data-translate="no_active_filters">
+            No active filters
+          </div>
+        </div>
+
+        <!-- View Toggle and Results Count -->
+        <div class="view-controls">
+          <div class="view-toggle">
+            <button class="view-toggle-btn active" data-view="list">📋 <span data-translate="list_view">List View</span></button>
+            <button class="view-toggle-btn" data-view="grid">🔄 <span data-translate="grid_view">Grid View</span></button>
+          </div>
+          
+          <div class="results-count" id="workerResultsCount" data-translate="showing_workers">
+            Showing 0 workers
+          </div>
+        </div>
+
+        <!-- Workers List View -->
+        <div class="workers-list" id="workersListContainer">
+          <div class="empty-state">
+            <div class="empty-state-icon">👥</div>
+            <h3 data-translate="no_workers_found">No workers found</h3>
+            <p data-translate="adjust_search_criteria">Try adjusting your search criteria or clear filters</p>
+          </div>
+        </div>
+
+        <!-- Workers Grid View -->
+        <div class="workers-grid" id="workersGridContainer" style="display: none;">
+          <!-- Grid view will be populated here -->
+        </div>
+      </section>
+
+<!-- POST JOB SECTION -->
+<section id="post-job" class="dashboard-section">
+  <div class="card">
+    <div class="section-title" data-translate="post_new_job">Post New Job</div>
+    <form id="postJobForm" class="job-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="jobTitle" data-translate="job_title">Job Title *</label>
+          <input type="text" id="jobTitle" data-translate-placeholder="job_title_placeholder" placeholder="e.g., Senior Frontend Developer" required>
+        </div>
+        <div class="form-group">
+          <label for="jobCategory" data-translate="job_category">Job Category *</label>
+          <select id="jobCategory" required>
+            <option value="" data-translate="select_category">Select Category</option>
+            <option value="tech">Tech & IT</option>
+            <option value="corporate">Corporate & Office</option>
+            <option value="skilled-trades">Skilled Trades</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="hospitality">Hospitality</option>
+            <option value="education">Education</option>
+            <option value="retail">Retail</option>
+            <option value="creative">Creative & Media</option>
+            <option value="manufacturing">Manufacturing</option>
+            <option value="home-services">Home Services</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="jobType" data-translate="job_type">Job Type *</label>
+          <select id="jobType" required>
+            <option value="" data-translate="select_type">Select Type</option>
+            <option value="fulltime">Full-Time</option>
+            <option value="parttime">Part-Time</option>
+            <option value="contract">Contract</option>
+            <option value="freelance">Freelance</option>
+            <option value="internship">Internship</option>
+            <option value="remote">Remote</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="jobSalary" data-translate="salary">Salary (₹/month)</label>
+          <input type="number" id="jobSalary" data-translate-placeholder="salary_placeholder" placeholder="e.g., 50000" min="0">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="jobLocation" data-translate="job_location">Location *</label>
+        <input type="text" id="jobLocation" data-translate-placeholder="location_placeholder" placeholder="e.g., Bangalore, Karnataka or Remote" required>
+      </div>
+
+      <div class="form-group">
+        <label for="jobDescription" data-translate="job_description">Job Description *</label>
+        <textarea id="jobDescription" data-translate-placeholder="job_description_placeholder" placeholder="Describe the job responsibilities, requirements, and what you're looking for..." rows="5" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="jobRequirements" data-translate="job_requirements">Requirements (one per line)</label>
+        <textarea id="jobRequirements" data-translate-placeholder="requirements_placeholder" placeholder="• 3+ years experience&#10;• Bachelor's degree&#10;• Specific skills..." rows="3"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="jobSkills" data-translate="required_skills">Required Skills (comma separated)</label>
+        <input type="text" id="jobSkills" data-translate-placeholder="skills_placeholder" placeholder="e.g., JavaScript, React, Node.js">
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" data-translate="publish_job">Publish Job</button>
+        <button type="button" class="btn btn-ghost" id="cancelPost" data-translate="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+      <!-- MANAGE JOBS SECTION -->
+      <section id="manage-jobs" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="manage_jobs">Manage Jobs</div>
+          <div class="table-responsive">
+            <table class="table" id="jobsTable">
+              <thead>
+                <tr>
+                  <th data-translate="job_title">Job Title</th>
+                  <th data-translate="category">Category</th>
+                  <th data-translate="job_type">Type</th>
+                  <th data-translate="job_location">Location</th>
+                  <th data-translate="applications">Applications</th>
+                  <th data-translate="status">Status</th>
+                  <th data-translate="actions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="jobsTableBody">
+                <!-- Jobs will be populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOTIFICATIONS SECTION -->
+      <section id="notifications-main" class="dashboard-section">
+        <div class="card">
+          <div class="section-title">
+            <h2>🔔 <span data-translate="notifications">Notifications</span></h2>
+            <div class="section-subtitle" data-translate="manage_alerts_messages">Manage your alerts and messages</div>
+          </div>
+          
+          <div class="notification-actions" style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="NotificationSystem.markAllAsRead()" data-translate="mark_all_read">
+              ✅ Mark All as Read
+            </button>
+            <button class="btn btn-ghost" onclick="NotificationSystem.createTestNotifications()">
+              🧪 Create Test Notifications
+            </button>
+            <button class="btn btn-ghost" onclick="NotificationSystem.clearAllNotifications()" data-translate="clear_all">
+              🗑️ Clear All
+            </button>
+          </div>
+
+          <div class="notifications-main-container" id="notificationsMainContainer">
+            <!-- Notifications will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- APPLICATIONS SECTION -->
+      <section id="applications" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="job_applications">Job Applications</div>
+          <div id="applicationsContainer">
+            <div class="empty-state">
+              <div class="empty-state-icon">📋</div>
+              <h3 data-translate="no_applications_received">No applications received</h3>
+              <p data-translate="applications_from_job_seekers">Applications from job seekers will appear here</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTIVE AGREEMENTS SECTION -->
+      <section id="active-agreements" class="dashboard-section">
+        <div class="card">
+          <div class="section-title">
+            <h2 data-translate="active_work_agreements">Active Work Agreements</h2>
+            <div class="section-subtitle" data-translate="manage_ongoing_contracts">Manage your ongoing work contracts</div>
+          </div>
+          <div id="activeAgreementsContainer">
+            <!-- Active agreements will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- PENDING WORK APPROVAL SECTION -->
+      <section id="pending-work" class="dashboard-section">
+        <div class="card">
+          <div class="section-title">
+            <h2 data-translate="pending_work_approval">Pending Work Approval</h2>
+            <div class="section-subtitle" data-translate="approve_work_logs">Approve work logs and process payments</div>
+          </div>
+          <div id="pendingWorkContainer">
+            <!-- Pending work logs will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Payment Methods Section -->
+<section id="payment-methods" class="dashboard-section">
+    <div class="card">
+        <div class="section-title">
+            <h2>💳 Payment Methods</h2>
+            <div class="section-subtitle">Manage your payment methods for paying workers</div>
+        </div>
+
+        <div class="payment-methods-container">
+            <!-- Saved Payment Methods -->
+            <div class="saved-methods-section">
+                <div class="section-header">
+                    <h3>Your Payment Methods</h3>
+                    <button class="btn btn-primary" onclick="EmployerDashboard.showAddPaymentMethodModal()">
+                        + Add Payment Method
+                    </button>
+                </div>
+                <div id="savedPaymentMethods" class="payment-methods-list">
+                    <!-- Payment methods will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Payment Statistics -->
+            <div class="payment-stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalPaid">₹0</div>
+                        <div class="stat-label">Total Paid</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="workersPaid">0</div>
+                        <div class="stat-label">Workers Paid</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="thisMonth">₹0</div>
+                        <div class="stat-label">This Month</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+      <!-- PAYMENT HISTORY SECTION -->
+      <section id="payment-history" class="dashboard-section">
+        <div class="card">
+          <div class="section-title">
+            <h2 data-translate="payment_history">Payment History</h2>
+            <div class="section-subtitle" data-translate="track_payments">Track all payments made to workers</div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th data-translate="worker">Worker</th>
+                  <th data-translate="job">Job</th>
+                  <th data-translate="amount">Amount</th>
+                  <th data-translate="date">Date</th>
+                  <th data-translate="status">Status</th>
+                  <th data-translate="actions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="paymentHistoryTable">
+                <!-- Payment history will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- MESSAGES SECTION -->
+      <section id="messages" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="messages">Messages</div>
+          <div class="empty-state">
+            <div class="empty-state-icon">💬</div>
+            <h3 data-translate="no_messages_yet">No messages yet</h3>
+            <p data-translate="messages_from_applicants">Messages from job applicants will appear here</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE SECTION -->
+      <section id="profile" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="company_profile">Company Profile</div>
+          
+          <!-- Profile Picture Section -->
+          <div class="profile-picture-card" style="margin-bottom: 24px;">
+            <h3 style="color: #fff; margin-bottom: 16px; font-size: 1.1rem; font-weight: 600;" data-translate="profile_picture">Profile Picture</h3>
+            <div class="profile-picture-content">
+              <div class="profile-picture-preview" id="profilePicturePreview">
+                <!-- Profile picture will be inserted here -->
+              </div>
+              <div class="profile-picture-controls">
+                <div class="upload-buttons">
+                  <input type="file" id="profilePictureUpload" accept="image/*" class="file-input">
+                  <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('profilePictureUpload').click()" data-translate="upload_picture">
+                    Upload Picture
+                  </button>
+                  <button type="button" class="btn btn-ghost btn-sm" id="removeProfilePicture" data-translate="remove">
+                    Remove
+                  </button>
+                </div>
+                <div class="upload-info">
+                  <div id="profilePictureLastUpdated" class="last-updated" data-translate="no_profile_picture">
+                    No profile picture uploaded
+                  </div>
+                  <div class="file-requirements">
+                    JPG, PNG or GIF (Max 2MB)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Profile Completion Card -->
+          <div class="profile-completion-card">
+            <div class="completion-header">
+              <h4 data-translate="profile_strength">Profile Strength</h4>
+              <span id="profileCompletion" data-translate="profile_completion">Profile Completion: 0%</span>
+            </div>
+            <div class="progress-bar">
+              <div id="profileProgressBar" class="progress-fill" style="width: 0%"></div>
+            </div>
+            <div id="profileProgressText" class="progress-text" data-translate="complete">0% Complete</div>
+            
+            <div class="profile-tips">
+              <h5 data-translate="tips_improve_profile">Tips to improve your profile:</h5>
+              <ul id="profileTipsList">
+                <!-- Tips will be populated by JavaScript -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- Document Upload Section -->
+          <div class="document-section">
+            <h4 data-translate="verification_documents">Verification Documents</h4>
+            <div class="document-upload-area" id="documentUploadArea">
+              <div class="upload-placeholder">
+                <div class="upload-icon">📄</div>
+                <p data-translate="upload_aadhaar_pan">Upload Aadhaar, PAN, or other verification documents</p>
+                <button class="btn btn-ghost" onclick="openDocumentUploadModal()" data-translate="upload_document">
+                  Upload Document
+                </button>
+              </div>
+            </div>
+            <div id="documentsList" class="documents-list">
+              <!-- Documents will be listed here -->
+            </div>
+          </div>
+          
+          <form id="profileForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label data-translate="company_name">Company Name</label>
+                <input type="text" id="profileCompanyName" required>
+              </div>
+              <div class="form-group">
+                <label data-translate="industry">Industry</label>
+                <input type="text" id="profileIndustry" required>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label data-translate="company_size">Company Size</label>
+                <select id="profileCompanySize" required>
+                  <option value="1-10">1-10 employees</option>
+                  <option value="11-50">11-50 employees</option>
+                  <option value="51-200">51-200 employees</option>
+                  <option value="201-500">201-500 employees</option>
+                  <option value="501-1000">501-1000 employees</option>
+                  <option value="1000+">1000+ employees</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label data-translate="company_category">Company Category</label>
+                <select id="profileCompanyCategory" required>
+                  <option value="tech">Technology & IT</option>
+                  <option value="manufacturing">Manufacturing</option>
+                  <option value="healthcare">Healthcare</option>
+                  <option value="retail">Retail</option>
+                  <option value="hospitality">Hospitality</option>
+                  <option value="construction">Construction</option>
+                  <option value="logistics">Logistics & Transport</option>
+                  <option value="education">Education</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label data-translate="location">Location</label>
+              <input type="text" id="profileLocation" required>
+            </div>
+
+            <div class="form-group">
+              <label data-translate="website">Website</label>
+              <input type="url" id="profileWebsite" placeholder="https://example.com">
+            </div>
+
+            <div class="form-group">
+              <label data-translate="company_description">Company Description</label>
+              <textarea id="profileDescription" rows="4" data-translate-placeholder="company_description_placeholder" placeholder="Tell job seekers about your company..."></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" data-translate="update_profile">Update Profile</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- FEEDBACK & REVIEWS SECTION -->
+      <section id="feedback" class="dashboard-section">
+        <div class="card">
+          <div class="section-title">
+            <h2 data-translate="feedback_reviews">Feedback & Reviews</h2>
+            <div class="section-subtitle" data-translate="rate_users_provide_feedback">Rate users and provide platform feedback</div>
+          </div>
+
+          <div class="feedback-type-selector">
+            <button class="feedback-tab active" data-form="pending-feedback">📝 <span data-translate="pending_feedback">Pending Feedback</span></button>
+            <button class="feedback-tab" data-form="given-feedback">⭐ <span data-translate="given_feedback">Given Feedback</span></button>
+            <button class="feedback-tab" data-form="received-feedback">📥 <span data-translate="received_feedback">Received Feedback</span></button>
+            <button class="feedback-tab" data-form="platform-feedback">🏢 <span data-translate="platform_feedback">Platform Feedback</span></button>
+            <button class="feedback-tab" data-form="report-issue">🚨 <span data-translate="report_issue">Report Issue</span></button>
+            <button class="feedback-tab" data-form="my-reports">📋 <span data-translate="my_reports">My Reports</span></button>
+          </div>
+
+          <!-- Pending Feedback -->
+          <div id="pending-feedback" class="feedback-form active">
+            <h4 data-translate="complete_your_feedback">Complete Your Feedback</h4>
+            <p class="form-description" data-translate="rate_users_worked_with">Rate users you've worked with</p>
+            <div id="pendingFeedbackList" class="pending-list"></div>
+          </div>
+
+          <!-- Given Feedback History -->
+          <div id="given-feedback" class="feedback-form">
+            <h4 data-translate="your_feedback_history">Your Feedback History</h4>
+            <div id="givenFeedbackList" class="feedback-history"></div>
+          </div>
+
+          <!-- Received Feedback -->
+          <div id="received-feedback" class="feedback-form">
+            <h4 data-translate="feedback_received">Feedback Received</h4>
+            <div id="receivedFeedbackList" class="feedback-history"></div>
+          </div>
+
+          <!-- Platform Feedback Form -->
+          <div id="platform-feedback" class="feedback-form">
+            <h4 data-translate="platform_feedback">Platform Feedback</h4>
+            <p class="form-description" data-translate="help_improve_opuslink">Help us improve OpusLink by sharing your experience</p>
+            
+            <form id="platformFeedbackForm">
+              <div class="form-group">
+                <label data-translate="feedback_type">Feedback Type *</label>
+                <select id="platformFeedbackType" required>
+                  <option value="" data-translate="select_feedback_type">Select feedback type</option>
+                  <option value="general">General Feedback</option>
+                  <option value="feature_request">Feature Request</option>
+                  <option value="bug_report">Bug Report</option>
+                  <option value="ui_ux">UI/UX Suggestion</option>
+                  <option value="payment_issue">Payment System</option>
+                  <option value="customer_service">Customer Service</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label data-translate="overall_platform_rating">Overall Platform Rating *</label>
+                <div class="rating-stars" id="platformRating" data-rating="0">
+                  <span class="rating-star" data-value="1">★</span>
+                  <span class="rating-star" data-value="2">★</span>
+                  <span class="rating-star" data-value="3">★</span>
+                  <span class="rating-star" data-value="4">★</span>
+                  <span class="rating-star" data-value="5">★</span>
+                </div>
+                <div class="rating-labels">
+                  <span data-translate="poor">Poor</span>
+                  <span data-translate="excellent">Excellent</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-translate="what_you_like">What do you like about OpusLink?</label>
+                <textarea id="platformLikes" data-translate-placeholder="what_you_like_placeholder" placeholder="What features do you enjoy? What works well for you?" rows="3"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label data-translate="what_can_improve">What can we improve? *</label>
+                <textarea id="platformImprovements" data-translate-placeholder="what_can_improve_placeholder" placeholder="What challenges have you faced? What would make your experience better?" rows="4" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label data-translate="would_you_recommend">Would you recommend OpusLink to others? *</label>
+                <div class="recommendation-options">
+                  <label class="option-label">
+                    <input type="radio" name="recommend" value="yes" required> 
+                    <span class="radio-custom"></span>
+                    <span data-translate="yes_definitely">Yes, definitely</span>
+                  </label>
+                  <label class="option-label">
+                    <input type="radio" name="recommend" value="maybe"> 
+                    <span class="radio-custom"></span>
+                    <span data-translate="maybe_with_improvements">Maybe, with improvements</span>
+                  </label>
+                  <label class="option-label">
+                    <input type="radio" name="recommend" value="no"> 
+                    <span class="radio-custom"></span>
+                    <span data-translate="probably_not">Probably not</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label data-translate="additional_comments">Additional Comments</label>
+                <textarea id="platformComments" data-translate-placeholder="additional_comments_placeholder" placeholder="Any other feedback, suggestions, or concerns?" rows="3"></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" data-translate="submit_platform_feedback">Submit Platform Feedback</button>
+                <button type="button" class="btn btn-ghost" onclick="FeedbackSystem.clearPlatformForm()" data-translate="clear_form">Clear Form</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Report Issue Form -->
+          <div id="report-issue" class="feedback-form">
+            <h4 data-translate="report_an_issue">Report an Issue</h4>
+            <p class="form-description" data-translate="report_problematic_users">Report problematic users or serious platform issues</p>
+            <form id="reportForm">
+              <!-- Existing report form content -->
+            </form>
+          </div>
+
+          <!-- My Reports -->
+          <div id="my-reports" class="feedback-form">
+            <h4 data-translate="your_reports_feedback">Your Reports & Feedback</h4>
+            <div id="myReportsList" class="reports-list"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODALS -->
+  <div id="applicationModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 data-translate="application_details">Application Details</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div id="applicationModalContent">
+        <!-- Application details will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Document Upload Modal -->
+  <div id="documentUploadModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 data-translate="upload_verification_document">Upload Verification Document</h3>
+        <button class="modal-close" onclick="closeDocumentUploadModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label data-translate="document_type">Document Type</label>
+          <select id="documentType" class="form-control">
+            <option value="aadhaar">Aadhaar Card</option>
+            <option value="pan">PAN Card</option>
+            <option value="license">Driving License</option>
+            <option value="passport">Passport</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-translate="document_file">Document File</label>
+          <div class="file-upload-area" id="fileUploadArea">
+            <input type="file" id="documentFile" accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+            <div class="upload-placeholder" onclick="document.getElementById('documentFile').click()">
+              <div class="upload-icon">📁</div>
+              <p data-translate="click_to_select_file">Click to select file (PDF, JPG, PNG)</p>
+              <span class="file-size" data-translate="max_size">Max size: 5MB</span>
+            </div>
+          </div>
+          <div id="selectedFileName" class="selected-file" style="display: none;"></div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="uploadDocument()" id="uploadDocumentBtn" disabled data-translate="upload_document">
+          Upload Document
+        </button>
+        <button class="btn btn-ghost" onclick="closeDocumentUploadModal()" data-translate="cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat System -->
+  <div id="chatSystem" class="chat-system">
+    <!-- Chats Sidebar -->
+    <div id="chatsSidebar" class="chats-sidebar">
+      <div class="chats-header">
+        <h3 data-translate="messages">Messages</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeChatSystem()">✕</button>
+      </div>
+      <div class="chats-list" id="chatsList">
+        <!-- Chats will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Chat Interface -->
+    <div id="chatInterface" class="chat-interface" style="display: none;">
+      <div class="chat-header">
+        <button class="btn btn-ghost btn-sm" id="backToChats">← <span data-translate="back">Back</span></button>
+        <div class="chat-user-info">
+          <div class="chat-user-name" id="chatUserName" data-translate="user_name">User Name</div>
+          <div class="chat-user-status" id="chatUserStatus" data-translate="online">Online</div>
+        </div>
+      </div>
+      
+      <div class="chat-messages" id="chatMessages">
+        <!-- Messages will be loaded here -->
+      </div>
+      
+      <div class="chat-input-area">
+        <textarea id="messageInput" data-translate-placeholder="type_message_placeholder" placeholder="Type a message..." rows="1"></textarea>
+        <button class="btn btn-primary" id="sendMessageBtn" data-translate="send">Send</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Chat Toggle Button -->
+  <button class="chat-toggle-btn" onclick="toggleChatSystem()">💬</button>
+    <!-- PAYMENT MODALS - MOVED TO BOTTOM -->
+  <div id="paymentMethodModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h3>Add Payment Method</h3>
+            <button class="modal-close" onclick="EmployerDashboard.closePaymentModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="addPaymentMethodForm">
+                <!-- Payment Method Type -->
+                <div class="form-group">
+                    <label>Payment Method Type</label>
+                    <select id="paymentMethodType" required onchange="EmployerDashboard.togglePaymentFields()">
+                        <option value="">Select Payment Method</option>
+                        <option value="bank_transfer">Bank Transfer</option>
+                        <option value="upi">UPI</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="card">Credit/Debit Card</option>
+                    </select>
+                </div>
+
+                <!-- Bank Transfer Fields -->
+                <div id="bankFields" class="payment-fields" style="display: none;">
+                    <div class="form-group">
+                        <label>Bank Name</label>
+                        <input type="text" id="bankName" placeholder="e.g., State Bank of India">
+                    </div>
+                    <div class="form-group">
+                        <label>Account Number</label>
+                        <input type="text" id="accountNumber" placeholder="Enter account number">
+                    </div>
+                    <div class="form-group">
+                        <label>IFSC Code</label>
+                        <input type="text" id="ifscCode" placeholder="e.g., SBIN0000123">
+                    </div>
+                    <div class="form-group">
+                        <label>Account Holder Name</label>
+                        <input type="text" id="accountHolderName" placeholder="Enter account holder name">
+                    </div>
+                </div>
+
+                <!-- UPI Fields -->
+                <div id="upiFields" class="payment-fields" style="display: none;">
+                    <div class="form-group">
+                        <label>UPI ID</label>
+                        <input type="text" id="upiId" placeholder="e.g., yourname@upi">
+                    </div>
+                </div>
+
+                <!-- PayPal Fields -->
+                <div id="paypalFields" class="payment-fields" style="display: none;">
+                    <div class="form-group">
+                        <label>PayPal Email</label>
+                        <input type="email" id="paypalEmail" placeholder="Enter PayPal email">
+                    </div>
+                </div>
+
+                <!-- Card Fields -->
+                <div id="cardFields" class="payment-fields" style="display: none;">
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="text" id="cardCvv" placeholder="123" maxlength="3">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Card Holder Name</label>
+                        <input type="text" id="cardHolderName" placeholder="Enter card holder name">
+                    </div>
+                </div>
+
+                <!-- Default Payment Method -->
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="setAsDefault">
+                    <label for="setAsDefault">Set as default payment method</label>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="EmployerDashboard.savePaymentMethod()">
+                Save Payment Method
+            </button>
+            <button type="button" class="btn btn-ghost" onclick="EmployerDashboard.closePaymentModal()">
+                Cancel
+            </button>
+        </div>
+    </div>
+  </div>
+
+  <div id="paymentProcessingModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h3>Process Payment</h3>
+            <button class="modal-close" onclick="EmployerDashboard.closePaymentProcessingModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="paymentProcessingContent">
+                <!-- Payment details will be loaded here -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" onclick="EmployerDashboard.confirmPayment()">
+                Confirm Payment
+            </button>
+            <button type="button" class="btn btn-ghost" onclick="EmployerDashboard.closePaymentProcessingModal()">
+                Cancel
+            </button>
+        </div>
+    </div>
+  </div>
+
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notification-system.js"></script>
+  <script src="js/storage-manager.js"></script>
+  <script src="js/data-generator.js"></script>
+  <script src="js/worker-generator.js"></script>
+  <script src="js/wallet.js"></script>
+  <script src="js/escrow-wallet.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/payment.js"></script>
+  <script src="js/work-tracking.js"></script>
+  <script src="js/feedback.js"></script>
+  <script src="js/dashboard.js"></script>
+  
+  <script>
+    // Add missing translations for dashboard
+    if (window.languageManager) {
+      const additionalTranslations = {
+        'employer_dashboard': 'ఓపస్ లింక్ — ఉద్యోగదాత డాష్బోర్డ్',
+        'member_since': 'సభ్యుడు గా',
+        'search_placeholder': 'ఉద్యోగాలు, దరఖాస్తుదారులు, కంపెనీలు శోధించండి...',
+        'wallet': 'వాలెట్',
+        'dashboard_overview': 'డాష్బోర్డ్ అవలోకనం',
+        'recent_applications': 'ఇటీవలి దరఖాస్తులు',
+        'quick_actions': 'క్విక్ యాక్షన్స్',
+        'browse_job_seekers': 'ఉద్యోగ అభ్యర్థులను బ్రౌజ్ చేయండి',
+        'search_skills_name_category': 'నైపుణ్యాలు, పేరు, వర్గం లేదా లొకేషన్ ద్వారా శోధించండి...',
+        'job_applications': 'ఉద్యోగ దరఖాస్తులు',
+        'no_applications_received': 'దరఖాస్తులు రాలేదు',
+        'applications_from_job_seekers': 'ఉద్యోగ అభ్యర్థుల నుండి దరఖాస్తులు ఇక్కడ కనిపిస్తాయి',
+        'active_work_agreements': 'సక్రియ పని ఒప్పందాలు',
+        'manage_ongoing_contracts': 'మీ కొనసాగుతున్న పని కాంట్రాక్టులను నిర్వహించండి',
+        'pending_work_approval': 'పెండింగ్ పని ఆమోదం',
+        'approve_work_logs': 'పని లాగ్లను ఆమోదించండి మరియు చెల్లింపులను ప్రాసెస్ చేయండి',
+        'track_payments': 'కార్మికులకు చేసిన అన్ని చెల్లింపులను ట్రాక్ చేయండి',
+        'no_messages_yet': 'ఇంకా సందేశాలు లేవు',
+        'messages_from_applicants': 'ఉద్యోగ దరఖాస్తుదారుల నుండి సందేశాలు ఇక్కడ కనిపిస్తాయి',
+        'company_profile': 'కంపెనీ ప్రొఫైల్',
+        'profile_picture': 'ప్రొఫైల్ పిక్చర్',
+        'upload_picture': 'పిక్చర్ అప్లోడ్ చేయండి',
+        'no_profile_picture': 'ప్రొఫైల్ పిక్చర్ అప్లోడ్ చేయబడలేదు',
+        'upload_aadhaar_pan': 'ఆధార్, PAN లేదా ఇతర ధృవీకరణ డాక్యుమెంట్స్ అప్లోడ్ చేయండి',
+        'company_description_placeholder': 'ఉద్యోగ అభ్యర్థులకు మీ కంపెనీ గురించి తెలియజేయండి...',
+        'manage_alerts_messages': 'మీ అలర్ట్స్ మరియు సందేశాలను నిర్వహించండి',
+        'mark_all_read': 'అన్నీ చదివినట్లు గుర్తించండి',
+        'clear_all': 'అన్నీ క్లియర్ చేయండి'
+      };
+      Object.assign(languageManager.teluguMap, additionalTranslations);
+    }
+
+    // Initialize employer dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+      if (!OpusAuth.requireAuth()) return;
+
+      const currentUser = OpusAuth.getCurrentUser();
+      if (currentUser.role !== 'employer') {
+        OpusUtils.showNotification('Access denied. Employer dashboard only.', 'error');
+        setTimeout(() => window.location.href = 'login.html', 2000);
+        return;
+      }
+
+      // Initialize dashboard
+      EmployerDashboard.init();
+    });
+  </script>
+</body>
+</html>

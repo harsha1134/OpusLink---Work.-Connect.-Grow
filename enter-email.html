@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-translate="email_verification">OpusLink | Email Verification</title>
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="js/language-manager.js"></script>
+  <style>
+    /* Language Toggle Button - Fixed to viewport top right */
+    .language-toggle-fixed {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10000;
+    }
+
+    .btn-language {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 140px;
+        justify-content: center;
+    }
+
+    .btn-language:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+    }
+
+    .btn-language:active {
+        transform: translateY(0);
+    }
+
+    /* For mobile responsiveness */
+    @media (max-width: 768px) {
+        .language-toggle-fixed {
+            top: 15px;
+            right: 15px;
+        }
+        
+        .btn-language {
+            padding: 10px 16px;
+            font-size: 13px;
+            min-width: 120px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .language-toggle-fixed {
+            top: 10px;
+            right: 10px;
+        }
+        
+        .btn-language {
+            padding: 8px 14px;
+            font-size: 12px;
+            min-width: 110px;
+        }
+    }
+  </style>
+</head>
+<body>
+  <!-- Language Toggle Button - FIXED POSITION AT TOP RIGHT -->
+  <div class="language-toggle-fixed">
+    <button id="langToggleBtn" class="btn-language" onclick="toggleLanguage()">
+      🌐 <span data-translate="toggle_language">Toggle Telugu</span>
+    </button>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-left">
+      <h1 class="brand">Opus<span>Link</span></h1>
+      <p class="tagline" data-translate="step_3_verify_email">Step 3: Verify Your Email</p>
+      <div class="progress-bar">
+        <div class="progress-step completed">1</div>
+        <div class="progress-step completed">2</div>
+        <div class="progress-step active">3</div>
+        <div class="progress-step">4</div>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <div class="form-box">
+        <h2 data-translate="email_verification">Email Verification</h2>
+        <p class="subtitle" data-translate="enter_email_receive_code">Enter your email to receive a verification code</p>
+
+        <form id="emailForm">
+          <div class="form-group">
+            <label for="email" data-translate="email_address">Email Address</label>
+            <input type="email" id="email" data-translate-placeholder="email_placeholder" placeholder="example@email.com" required>
+          </div>
+
+          <button type="submit" class="btn" data-translate="send_verification_code">Send Verification Code</button>
+        </form>
+
+        <div class="login-link">
+          <span data-translate="already_verified">Already verified?</span> <a href="login.html" data-translate="login">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Add missing translations
+    if (window.languageManager) {
+      const additionalTranslations = {
+        'step_3_verify_email': 'దశ 3: మీ ఈమెయిల్ ని ధృవీకరించండి',
+        'enter_email_receive_code': 'ధృవీకరణ కోడ్ పొందడానికి మీ ఈమెయిల్ నమోదు చేయండి',
+        'send_verification_code': 'ధృవీకరణ కోడ్ పంపండి',
+        'already_verified': 'ఇప్పటికే ధృవీకరించబడిందా?',
+        'email_verification': 'ఈమెయిల్ ధృవీకరణ - ఓపస్ లింక్'
+      };
+      Object.assign(languageManager.teluguMap, additionalTranslations);
+    }
+
+    const form = document.getElementById('emailForm');
+    
+    // Pre-fill email from account data if available
+    const tempAccount = sessionStorage.getItem('tempAccount');
+    if (tempAccount) {
+      const accountData = JSON.parse(tempAccount);
+      document.getElementById('email').value = accountData.email;
+    }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+
+      // Generate random 6-digit OTP
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      
+      // Store OTP for verification
+      sessionStorage.setItem('verificationOTP', otp);
+      sessionStorage.setItem('verificationEmail', email);
+
+      // simulate sending OTP
+      alert(`📧 Verification code sent to ${email}\nYour OTP: ${otp} (This is a simulation)`);
+
+      // Get role from account data
+      const accountData = JSON.parse(sessionStorage.getItem('tempAccount'));
+      const role = accountData.role;
+
+      // redirect to OTP verification page
+      window.location.href = `verify-otp.html?role=${role}&email=${encodeURIComponent(email)}`;
+    });
+
+    // Check if user came from proper flow
+    if (!sessionStorage.getItem('tempAccount')) {
+      alert("Please complete your profile first!");
+      window.location.href = 'sliding.html';
+    }
+  </script>
+</body>
+</html>

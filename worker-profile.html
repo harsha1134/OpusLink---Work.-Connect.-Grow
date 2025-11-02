@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-translate="job_seeker_profile_setup">Job Seeker Profile Setup | OpusLink</title>
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="js/language-manager.js"></script>
+  <style>
+    /* Language Toggle Button - Fixed to viewport top right */
+    .language-toggle-fixed {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10000; /* Very high z-index to ensure it's on top */
+    }
+
+    .btn-language {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 140px;
+        justify-content: center;
+    }
+
+    .btn-language:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+    }
+
+    .btn-language:active {
+        transform: translateY(0);
+    }
+
+    /* Ensure no parent containers affect positioning */
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* For mobile responsiveness */
+    @media (max-width: 768px) {
+        .language-toggle-fixed {
+            top: 15px;
+            right: 15px;
+        }
+        
+        .btn-language {
+            padding: 10px 16px;
+            font-size: 13px;
+            min-width: 120px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .language-toggle-fixed {
+            top: 10px;
+            right: 10px;
+        }
+        
+        .btn-language {
+            padding: 8px 14px;
+            font-size: 12px;
+            min-width: 110px;
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <!-- Language Toggle Button - Absolute Top Right -->
+    <div class="language-toggle-absolute">
+      <button id="langToggleBtn" class="btn-language" onclick="toggleLanguage()">
+        🌐 <span data-translate="toggle_language">Toggle Telugu</span>
+      </button>
+    </div>
+
+    <div class="auth-left">
+      <h1 class="brand">Opus<span>Link</span></h1>
+      <p class="tagline" data-translate="step_2_professional_profile">Step 2: Professional Profile</p>
+      <div class="progress-bar">
+        <div class="progress-step completed">1</div>
+        <div class="progress-step active">2</div>
+        <div class="progress-step">3</div>
+        <div class="progress-step">4</div>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <div class="form-box">
+        <h2 data-translate="job_seeker_profile">Job Seeker Profile</h2>
+        <p class="subtitle" data-translate="tell_us_background">Tell us about your professional background</p>
+
+        <form id="workerProfileForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label data-translate="primary_job_category">Primary Job Category</label>
+              <select id="jobCategory" required>
+                <option value="" data-translate="select_category">Select Category</option>
+                <option value="tech" data-translate="tech_it">Tech & IT</option>
+                <option value="corporate" data-translate="corporate">Corporate & Office</option>
+                <option value="skilled-trades" data-translate="skilled_trades">Skilled Trades</option>
+                <option value="delivery" data-translate="delivery_transport">Delivery & Transport</option>
+                <option value="healthcare" data-translate="healthcare">Healthcare</option>
+                <option value="hospitality" data-translate="hospitality">Hospitality</option>
+                <option value="education" data-translate="education">Education</option>
+                <option value="retail" data-translate="retail">Retail</option>
+                <option value="creative" data-translate="creative_media">Creative & Media</option>
+                <option value="manufacturing" data-translate="manufacturing">Manufacturing</option>
+                <option value="home-services" data-translate="home_services">Home Services</option>
+                <option value="other" data-translate="other_professionals">Other Professionals</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label data-translate="experience_level">Experience Level</label>
+              <select id="experienceLevel" required>
+                <option value="" data-translate="select_experience">Select Experience</option>
+                <option value="fresher" data-translate="fresher">Fresher (0-1 years)</option>
+                <option value="junior" data-translate="junior">Junior (1-3 years)</option>
+                <option value="mid" data-translate="mid_level">Mid-Level (3-7 years)</option>
+                <option value="senior" data-translate="senior">Senior (7+ years)</option>
+                <option value="executive" data-translate="executive">Executive Level</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label data-translate="work_type_preference">Work Type Preference</label>
+              <select id="workType" required>
+                <option value="" data-translate="select_work_type">Select Work Type</option>
+                <option value="fulltime" data-translate="fulltime">Full-Time</option>
+                <option value="parttime" data-translate="parttime">Part-Time</option>
+                <option value="contract" data-translate="contract">Contract</option>
+                <option value="freelance" data-translate="freelance">Freelance</option>
+                <option value="internship" data-translate="internship">Internship</option>
+                <option value="remote" data-translate="remote">Remote</option>
+                <option value="hybrid" data-translate="hybrid">Hybrid</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label data-translate="expected_salary">Expected Salary (₹/month)</label>
+              <input type="number" id="expectedSalary" data-translate-placeholder="expected_salary_placeholder" placeholder="e.g., 30000" min="0">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label data-translate="skills_comma_separated">Skills (comma separated)</label>
+            <input type="text" id="skills" data-translate-placeholder="skills_placeholder" placeholder="E.g., JavaScript, Customer Service, Plumbing, Cooking" required>
+          </div>
+
+          <div class="form-group">
+            <label data-translate="education">Education</label>
+            <input type="text" id="education" data-translate-placeholder="education_placeholder" placeholder="Highest Qualification (e.g., B.Tech, MBA, High School, Certification)" required>
+          </div>
+
+          <div class="form-group">
+            <label data-translate="preferred_location">Preferred Location</label>
+            <input type="text" id="preferredLocation" data-translate-placeholder="preferred_location_placeholder" placeholder="City, State, or 'Remote'" required>
+          </div>
+
+          <div class="form-group">
+            <label data-translate="brief_bio_introduction">Brief Bio/Introduction</label>
+            <textarea id="bio" data-translate-placeholder="bio_placeholder" placeholder="Tell employers about yourself, your experience, and what you're looking for..." rows="3"></textarea>
+          </div>
+
+          <button type="submit" class="btn" data-translate="continue">Continue →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Add missing placeholder translations to language manager
+    if (window.languageManager) {
+      const additionalTranslations = {
+        'expected_salary_placeholder': 'ఉదా., 30000',
+        'skills_placeholder': 'ఉదా., జావాస్క్రిప్ట్, కస్టమర్ సర్వీస్, ప్లంబింగ్, కుకింగ్',
+        'education_placeholder': 'అత్యధిక అర్హత (ఉదా., బి.టెక్, ఎంబీఏ, హైస్కూల్, సర్టిఫికేషన్)',
+        'preferred_location_placeholder': 'నగరం, రాష్ట్రం, లేదా రిమోట్',
+        'bio_placeholder': 'ఉద్యోగదాతలకు మీ గురించి, మీ అనుభవం మరియు మీరు ఏమి కోరుకుంటున్నారో చెప్పండి...',
+        'fresher': 'ఫ్రెషర్ (0-1 సంవత్సరాలు)',
+        'junior': 'జూనియర్ (1-3 సంవత్సరాలు)',
+        'mid_level': 'మిడ్-లెవెల్ (3-7 సంవత్సరాలు)',
+        'senior': 'సీనియర్ (7+ సంవత్సరాలు)',
+        'executive': 'ఎగ్జిక్యూటివ్ లెవెల్',
+        'fulltime': 'పూర్తి-సమయం',
+        'parttime': 'పార్ట్-టైమ్',
+        'contract': 'కాంట్రాక్ట్',
+        'freelance': 'ఫ్రీలాన్స్',
+        'internship': 'ఇంటర్న్షిప్',
+        'remote': 'రిమోట్',
+        'hybrid': 'హైబ్రిడ్',
+        'job_seeker_profile_setup': 'ఉద్యోగ అభ్యర్థి ప్రొఫైల్ సెటప్ - ఓపస్ లింక్'
+      };
+      
+      Object.assign(languageManager.teluguMap, additionalTranslations);
+    }
+
+    const form = document.getElementById('workerProfileForm');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const profileData = {
+        jobCategory: document.getElementById('jobCategory').value,
+        experienceLevel: document.getElementById('experienceLevel').value,
+        workType: document.getElementById('workType').value,
+        expectedSalary: document.getElementById('expectedSalary').value,
+        skills: document.getElementById('skills').value,
+        education: document.getElementById('education').value,
+        preferredLocation: document.getElementById('preferredLocation').value,
+        bio: document.getElementById('bio').value
+      };
+
+      sessionStorage.setItem('workerProfile', JSON.stringify(profileData));
+      window.location.href = 'enter-email.html';
+    });
+
+    const tempAccount = sessionStorage.getItem('tempAccount');
+    if (!tempAccount) {
+      alert("Please complete account setup first!");
+      window.location.href = 'sliding.html';
+    }
+  </script>
+</body>
+</html>

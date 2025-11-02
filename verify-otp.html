@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-translate="enter_otp">Enter OTP | OpusLink</title>
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="js/language-manager.js"></script>
+  <style>
+    /* Language Toggle Button - Fixed to viewport top right */
+    .language-toggle-fixed {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10000;
+    }
+
+    .btn-language {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 140px;
+        justify-content: center;
+    }
+
+    .btn-language:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+    }
+
+    .btn-language:active {
+        transform: translateY(0);
+    }
+
+    /* For mobile responsiveness */
+    @media (max-width: 768px) {
+        .language-toggle-fixed {
+            top: 15px;
+            right: 15px;
+        }
+        
+        .btn-language {
+            padding: 10px 16px;
+            font-size: 13px;
+            min-width: 120px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .language-toggle-fixed {
+            top: 10px;
+            right: 10px;
+        }
+        
+        .btn-language {
+            padding: 8px 14px;
+            font-size: 12px;
+            min-width: 110px;
+        }
+    }
+  </style>
+</head>
+<body>
+  <!-- Language Toggle Button - FIXED POSITION AT TOP RIGHT -->
+  <div class="language-toggle-fixed">
+    <button id="langToggleBtn" class="btn-language" onclick="toggleLanguage()">
+      🌐 <span data-translate="toggle_language">Toggle Telugu</span>
+    </button>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-left">
+      <h1 class="brand">Opus<span>Link</span></h1>
+      <p class="tagline" data-translate="step_4_verify_account">Step 4: Verify Your Account</p>
+      <div class="progress-bar">
+        <div class="progress-step completed">1</div>
+        <div class="progress-step completed">2</div>
+        <div class="progress-step completed">3</div>
+        <div class="progress-step active">4</div>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <div class="form-box">
+        <h2 data-translate="email_verification">Email Verification</h2>
+        <p class="subtitle" id="emailText" data-translate="enter_otp_sent">Enter OTP sent to your email</p>
+
+        <form id="otpForm">
+          <div class="otp-inputs">
+            <input type="text" maxlength="1" required>
+            <input type="text" maxlength="1" required>
+            <input type="text" maxlength="1" required>
+            <input type="text" maxlength="1" required>
+            <input type="text" maxlength="1" required>
+            <input type="text" maxlength="1" required>
+          </div>
+
+          <button type="submit" class="btn" data-translate="verify_complete_registration">Verify & Complete Registration</button>
+
+          <p class="resend-text">
+            <span data-translate="didnt_receive_code">Didn't receive the code?</span> <a href="#" id="resend" data-translate="resend_otp">Resend OTP</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/otp.js"></script>
+  <script>
+    // Add missing translations
+    if (window.languageManager) {
+      const additionalTranslations = {
+        'enter_otp': 'OTP నమోదు చేయండి - ఓపస్ లింక్',
+        'step_4_verify_account': 'దశ 4: మీ ఖాతాను ధృవీకరించండి',
+        'email_verification': 'ఈమెయిల్ ధృవీకరణ',
+        'enter_otp_sent': 'మీ ఈమెయిల్ కు పంపబడిన OTP నమోదు చేయండి',
+        'verify_complete_registration': 'ధృవీకరించండి & రిజిస్ట్రేషన్ పూర్తి చేయండి',
+        'didnt_receive_code': 'కోడ్ రాలేదా?',
+        'resend_otp': 'OTP తిరిగి పంపండి'
+      };
+      Object.assign(languageManager.teluguMap, additionalTranslations);
+    }
+
+    // Set email in subtitle
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get('email');
+    if (email) {
+      const emailText = document.getElementById('emailText');
+      if (languageManager.getCurrentLanguage() === 'te') {
+        emailText.textContent = `${email} కు పంపబడిన OTP నమోదు చేయండి`;
+      } else {
+        emailText.textContent = `Enter OTP sent to ${email}`;
+      }
+    }
+
+    const form = document.getElementById('otpForm');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      
+      const inputs = document.querySelectorAll('.otp-inputs input');
+      const enteredOTP = Array.from(inputs).map(input => input.value).join('');
+      const storedOTP = sessionStorage.getItem('verificationOTP');
+
+      if (enteredOTP === storedOTP) {
+        // OTP verified - complete registration
+        completeRegistration();
+      } else {
+        alert("❌ Invalid OTP. Please try again.");
+        // Clear inputs
+        inputs.forEach(input => input.value = '');
+        inputs[0].focus();
+      }
+    });
+
+    document.getElementById('resend').addEventListener('click', function(e){
+      e.preventDefault();
+      const email = sessionStorage.getItem('verificationEmail');
+      const newOTP = Math.floor(100000 + Math.random() * 900000).toString();
+      sessionStorage.setItem('verificationOTP', newOTP);
+      
+      if (languageManager.getCurrentLanguage() === 'te') {
+        alert(`📧 కొత్త OTP ${email} కు పంపబడింది\nమీ OTP: ${newOTP} (ఇది ఒక సిమ్యులేషన్)`);
+      } else {
+        alert(`📧 New OTP sent to ${email}\nYour OTP: ${newOTP} (This is a simulation)`);
+      }
+    });
+
+    function completeRegistration() {
+      const tempAccount = JSON.parse(sessionStorage.getItem('tempAccount'));
+      const role = tempAccount.role;
+
+      let userData = {
+        ...tempAccount,
+        id: Date.now().toString(),
+        isVerified: true,
+        createdAt: new Date().toISOString()
+      };
+
+      // Add role-specific profile data
+      if (role === 'employer') {
+        const employerProfile = JSON.parse(sessionStorage.getItem('employerProfile'));
+        userData = { ...userData, ...employerProfile };
+        
+        // Initialize employer-specific data
+        userData.postedJobs = [];
+        userData.hiredWorkers = [];
+      } else {
+        const workerProfile = JSON.parse(sessionStorage.getItem('workerProfile'));
+        userData = { ...userData, ...workerProfile };
+        
+        // Initialize worker-specific data
+        userData.applications = [];
+        userData.skills = userData.skills.split(',').map(skill => skill.trim());
+      }
+
+      // Save to localStorage (simulate database)
+      const users = JSON.parse(localStorage.getItem('opuslink_users') || '[]');
+      users.push(userData);
+      localStorage.setItem('opuslink_users', JSON.stringify(users));
+
+      // Clear temporary data
+      sessionStorage.removeItem('tempAccount');
+      sessionStorage.removeItem('employerProfile');
+      sessionStorage.removeItem('workerProfile');
+      sessionStorage.removeItem('verificationOTP');
+      sessionStorage.removeItem('verificationEmail');
+
+      if (languageManager.getCurrentLanguage() === 'te') {
+        alert(`🎉 రిజిస్ట్రేషన్ విజయవంతమైంది! ఓపస్ లింక్ కు స్వాగతం, ${userData.fullName}!`);
+      } else {
+        alert(`🎉 Registration Successful! Welcome to OpusLink, ${userData.fullName}!`);
+      }
+      
+      // Redirect to login
+      window.location.href = 'login.html';
+    }
+
+    // Check if user came from proper flow
+    if (!sessionStorage.getItem('tempAccount') || !sessionStorage.getItem('verificationOTP')) {
+      if (languageManager.getCurrentLanguage() === 'te') {
+        alert("దయచేసి ధృవీకరణ ప్రక్రియను ప్రారంభం నుండి ప్రారంభించండి!");
+      } else {
+        alert("Please start the verification process from the beginning!");
+      }
+      window.location.href = 'sliding.html';
+    }
+  </script>
+</body>
+</html>

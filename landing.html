@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpusLink - Connect Talent with Opportunity</title>
+    <link rel="stylesheet" href="css/landing.css">
+    <script src="js/language-manager.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>Opus<span>Link</span></h2>
+            </div>
+            <div class="nav-links">
+                <a href="#features" data-translate="features">Features</a>
+                <a href="#how-it-works" data-translate="how_it_works">How It Works</a>
+                <a href="#categories" data-translate="job_categories">Job Categories</a>
+                <a href="login.html" class="login-btn" data-translate="login">Login</a>
+                <a href="sliding.html" class="signup-btn" data-translate="get_started">Get Started</a>
+                <button id="langToggleBtn" class="language-toggle" onclick="toggleLanguage()">
+                    <span data-translate="toggle_language">Toggle Telugu</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 data-translate="where_great_talent_meets_great_opportunity">Where <span>Great Talent</span> Meets <span>Great Opportunity</span></h1>
+                <p data-translate="opuslink_bridges_gap">OpusLink bridges the gap between employers and skilled professionals across all industries - from tech to trades, healthcare to hospitality.</p>
+                <div class="hero-buttons">
+                    <a href="sliding.html?role=employer" class="btn btn-primary" data-translate="hire_talent">Hire Talent</a>
+                    <a href="sliding.html?role=worker" class="btn btn-secondary" data-translate="find_work">Find Work</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <h3>1,000+</h3>
+                        <p data-translate="companies_hiring">Companies Hiring</p>
+                    </div>
+                    <div class="stat">
+                        <h3>50,000+</h3>
+                        <p data-translate="professionals_hired">Professionals Hired</p>
+                    </div>
+                    <div class="stat">
+                        <h3>15+</h3>
+                        <p data-translate="job_categories">Job Categories</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="floating-card employer">
+                    <div class="card-header">
+                        <div class="avatar">AC</div>
+                        <div>
+                            <h4>Acme Corp</h4>
+                            <p data-translate="hiring_multiple_roles">Hiring Multiple Roles</p>
+                        </div>
+                    </div>
+                    <p>⭐ 4.8 • <span data-translate="multiple_locations">Multiple Locations</span></p>
+                </div>
+                <div class="floating-card worker">
+                    <div class="card-header">
+                        <div class="avatar">RS</div>
+                        <div>
+                            <h4>Rohan Sharma</h4>
+                            <p data-translate="full_stack_developer">Full Stack Developer</p>
+                        </div>
+                    </div>
+                    <p>🚀 <span data-translate="years_experience">3+ years experience</span></p>
+                </div>
+                <div class="floating-card trade">
+                    <div class="card-header">
+                        <div class="avatar">EP</div>
+                        <div>
+                            <h4>Electrician Pro</h4>
+                            <p data-translate="certified_electrician">Certified Electrician</p>
+                        </div>
+                    </div>
+                    <p>🔧 <span data-translate="projects_completed">50+ projects completed</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Job Categories -->
+    <section id="categories" class="categories">
+        <div class="container">
+            <h2 data-translate="all_job_categories">All Job <span>Categories</span></h2>
+            <p class="section-subtitle" data-translate="find_opportunities_across_industries">Find opportunities across every industry and skill level</p>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">💻</div>
+                    <h3 data-translate="tech_it">Tech & IT</h3>
+                    <p data-translate="tech_it_description">Developers, Designers, Data Scientists, Cybersecurity</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🏢</div>
+                    <h3 data-translate="corporate">Corporate</h3>
+                    <p data-translate="corporate_description">Sales, Marketing, HR, Finance, Administration</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🔧</div>
+                    <h3 data-translate="skilled_trades">Skilled Trades</h3>
+                    <p data-translate="skilled_trades_description">Electricians, Plumbers, Mechanics, Construction</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🚚</div>
+                    <h3 data-translate="delivery_transport">Delivery & Transport</h3>
+                    <p data-translate="delivery_transport_description">Drivers, Logistics, Warehouse, Delivery Partners</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🏥</div>
+                    <h3 data-translate="healthcare">Healthcare</h3>
+                    <p data-translate="healthcare_description">Doctors, Nurses, Paramedics, Medical Staff</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🍽️</div>
+                    <h3 data-translate="hospitality">Hospitality</h3>
+                    <p data-translate="hospitality_description">Chefs, Waiters, Hotel Staff, Restaurant Workers</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🎓</div>
+                    <h3 data-translate="education">Education</h3>
+                    <p data-translate="education_description">Teachers, Tutors, Trainers, Education Staff</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🛍️</div>
+                    <h3 data-translate="retail">Retail</h3>
+                    <p data-translate="retail_description">Sales Associates, Cashiers, Store Managers</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🎨</div>
+                    <h3 data-translate="creative_media">Creative & Media</h3>
+                    <p data-translate="creative_media_description">Designers, Writers, Photographers, Editors</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🏭</div>
+                    <h3 data-translate="manufacturing">Manufacturing</h3>
+                    <p data-translate="manufacturing_description">Factory Workers, Machine Operators, Quality Control</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">👶</div>
+                    <h3 data-translate="home_services">Home Services</h3>
+                    <p data-translate="home_services_description">Domestic Help, Caregivers, Cooks, Cleaners</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🔬</div>
+                    <h3 data-translate="other_professionals">Other Professionals</h3>
+                    <p data-translate="other_professionals_description">Legal, Consulting, Research, Specialized Services</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 data-translate="why_choose_opuslink">Why Choose <span>OpusLink</span></h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 data-translate="fast_matching">Fast Matching</h3>
+                    <p data-translate="fast_matching_description">Connects the right talent with the right opportunities across all industries.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 data-translate="verified_profiles">Verified Profiles</h3>
+                    <p data-translate="verified_profiles_description">Every professional and company is thoroughly verified for your peace of mind.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💼</div>
+                    <h3 data-translate="all_opportunity_types">All Opportunity Types</h3>
+                    <p data-translate="all_opportunity_types_description">From full-time roles to freelance gigs, contracts, and daily work - we cover it all.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 data-translate="smart_analytics">Smart Analytics</h3>
+                    <p data-translate="smart_analytics_description">Track applications, responses, and performance with detailed insights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 data-translate="how_opuslink_works">How <span>OpusLink</span> Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 data-translate="sign_up_choose_role">Sign Up & Choose Role</h3>
+                    <p data-translate="sign_up_description">Register as Employer or Job Seeker across any industry</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 data-translate="complete_profile">Complete Profile</h3>
+                    <p data-translate="complete_profile_description">Tell us about your company needs or professional skills</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 data-translate="get_matched">Get Matched</h3>
+                    <p data-translate="get_matched_description">Our system finds perfect matches based on your criteria</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3 data-translate="connect_succeed">Connect & Succeed</h3>
+                    <p data-translate="connect_succeed_description">Start conversations and build successful partnerships</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2 data-translate="ready_to_transform">Ready to Transform Your Career or Business?</h2>
+            <p data-translate="join_thousands_successful">Join thousands of successful connections on OpusLink today</p>
+            <div class="cta-buttons">
+                <a href="sliding.html?role=employer" class="btn btn-primary" data-translate="start_hiring">Start Hiring</a>
+                <a href="sliding.html?role=worker" class="btn btn-secondary" data-translate="find_jobs">Find Jobs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>OpusLink</h3>
+                    <p data-translate="connecting_talent_opportunity">Connecting talent with opportunity across all industries</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="for_job_seekers">For Job Seekers</h4>
+                    <a href="#" data-translate="find_jobs">Find Jobs</a>
+                    <a href="#" data-translate="career_resources">Career Resources</a>
+                    <a href="#" data-translate="success_stories">Success Stories</a>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="for_employers">For Employers</h4>
+                    <a href="#" data-translate="post_jobs">Post Jobs</a>
+                    <a href="#" data-translate="find_talent">Find Talent</a>
+                    <a href="#" data-translate="pricing">Pricing</a>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="company">Company</h4>
+                    <a href="#" data-translate="about_us">About Us</a>
+                    <a href="#" data-translate="contact">Contact</a>
+                    <a href="#" data-translate="privacy_policy">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 OpusLink. <span data-translate="all_rights_reserved">All rights reserved.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/utils.js"></script>
+    <script src="data/sample-data.js"></script>
+    <script>
+        // Initialize sample data
+        initializeSampleData();
+        
+        // Add CSS for language toggle
+        const style = document.createElement('style');
+        style.textContent = `
+            .language-toggle {
+                background: transparent;
+                border: 1px solid #007bff;
+                color: #007bff;
+                padding: 8px 16px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 14px;
+                margin-left: 10px;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                display: inline-block;
+            }
+            
+            .language-toggle:hover {
+                background: #007bff;
+                color: white;
+            }
+            
+            @media (max-width: 768px) {
+                .language-toggle {
+                    padding: 6px 12px;
+                    font-size: 12px;
+                    margin-left: 5px;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

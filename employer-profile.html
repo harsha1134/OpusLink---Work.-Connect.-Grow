@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-translate="employer_profile_setup">Employer Profile Setup | OpusLink</title>
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="js/language-manager.js"></script>
+  <style>
+    /* Position the language toggle in the top right corner */
+    .language-toggle-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    
+    .btn-language {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-language:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+    
+    /* Ensure the auth-right container has relative positioning */
+    .auth-right {
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-left">
+      <h1 class="brand">Opus<span>Link</span></h1>
+      <p class="tagline" data-translate="step_2_company_profile">Step 2: Company Profile</p>
+      <div class="progress-bar">
+        <div class="progress-step completed">1</div>
+        <div class="progress-step active">2</div>
+        <div class="progress-step">3</div>
+        <div class="progress-step">4</div>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <!-- Language Toggle Button - Now positioned in top right corner -->
+      <div class="language-toggle-container">
+        <button id="langToggleBtn" class="btn-language" onclick="toggleLanguage()">
+          <span data-translate="toggle_language">Toggle Telugu</span>
+        </button>
+      </div>
+
+      <div class="form-box">
+        <h2 data-translate="employer_profile">Employer Profile</h2>
+        <p class="subtitle" data-translate="tell_us_company">Tell us about your company</p>
+
+        <form id="employerProfileForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label data-translate="company_category">Company Category</label>
+              <select id="companyCategory" required>
+                <option value="" data-translate="select_category">Select Category</option>
+                <option value="tech" data-translate="technology_it">Technology & IT</option>
+                <option value="manufacturing" data-translate="manufacturing">Manufacturing</option>
+                <option value="healthcare" data-translate="healthcare">Healthcare</option>
+                <option value="retail" data-translate="retail">Retail</option>
+                <option value="hospitality" data-translate="hospitality">Hospitality</option>
+                <option value="construction" data-translate="construction">Construction</option>
+                <option value="logistics" data-translate="logistics_transport">Logistics & Transport</option>
+                <option value="education" data-translate="education">Education</option>
+                <option value="other" data-translate="other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label data-translate="company_size">Company Size</label>
+              <select id="companySize" required>
+                <option value="" data-translate="select_size">Select Size</option>
+                <option value="1-10" data-translate="employees_1_10">1-10 employees</option>
+                <option value="11-50" data-translate="employees_11_50">11-50 employees</option>
+                <option value="51-200" data-translate="employees_51_200">51-200 employees</option>
+                <option value="201-500" data-translate="employees_201_500">201-500 employees</option>
+                <option value="501-1000" data-translate="employees_501_1000">501-1000 employees</option>
+                <option value="1000+" data-translate="employees_1000_plus">1000+ employees</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label data-translate="organization_name">Organization Name</label>
+            <input type="text" id="companyName" data-translate-placeholder="enter_organization_name" placeholder="Enter organization name" required>
+          </div>
+
+          <div class="form-group">
+            <label data-translate="industry_field">Industry / Field</label>
+            <input type="text" id="industry" data-translate-placeholder="industry_placeholder" placeholder="E.g., IT, Construction, Healthcare" required>
+          </div>
+
+          <div class="form-group">
+            <label data-translate="company_website">Company Website (optional)</label>
+            <input type="url" id="website" data-translate-placeholder="website_placeholder" placeholder="https://example.com">
+          </div>
+
+          <div class="form-group">
+            <label data-translate="location">Location</label>
+            <input type="text" id="location" data-translate-placeholder="location_placeholder" placeholder="City, State, Country" required>
+          </div>
+
+          <div class="form-group">
+            <label data-translate="company_description">Company Description</label>
+            <textarea id="description" data-translate-placeholder="company_description_placeholder" placeholder="Describe your company, culture, and what you do..." rows="3"></textarea>
+          </div>
+
+          <button type="submit" class="btn" data-translate="continue">Continue →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Add missing placeholder translations to language manager
+    if (window.languageManager) {
+      // Add dynamic translations for placeholders
+      const additionalTranslations = {
+        'industry_placeholder': 'ఉదా., ఐటి, కన్స్ట్రక్షన్, హెల్త్ కేర్',
+        'website_placeholder': 'https://example.com',
+        'location_placeholder': 'నగరం, రాష్ట్రం, దేశం',
+        'company_description_placeholder': 'మీ కంపెనీ, సంస్కృతి మరియు మీరు ఏమి చేస్తారో వివరించండి...',
+        'technology_it': 'టెక్నాలజీ & ఐటి',
+        'logistics_transport': 'లాజిస్టిక్స్ & ట్రాన్స్పోర్ట్',
+        'employees_1_10': '1-10 ఉద్యోగులు',
+        'employees_11_50': '11-50 ఉద్యోగులు',
+        'employees_51_200': '51-200 ఉద్యోగులు',
+        'employees_201_500': '201-500 ఉద్యోగులు',
+        'employees_501_1000': '501-1000 ఉద్యోగులు',
+        'employees_1000_plus': '1000+ ఉద్యోగులు'
+      };
+      
+      // Merge additional translations
+      Object.assign(languageManager.teluguMap, additionalTranslations);
+    }
+
+    const form = document.getElementById('employerProfileForm');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const profileData = {
+        companyCategory: document.getElementById('companyCategory').value,
+        companySize: document.getElementById('companySize').value,
+        companyName: document.getElementById('companyName').value,
+        industry: document.getElementById('industry').value,
+        website: document.getElementById('website').value,
+        location: document.getElementById('location').value,
+        description: document.getElementById('description').value
+      };
+
+      // Store profile data temporarily
+      sessionStorage.setItem('employerProfile', JSON.stringify(profileData));
+
+      // Redirect to email verification
+      window.location.href = 'enter-email.html';
+    });
+
+    // Check if user came from proper flow
+    const tempAccount = sessionStorage.getItem('tempAccount');
+    if (!tempAccount) {
+      alert("Please complete account setup first!");
+      window.location.href = 'sliding.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Payment - OpusLink</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c, #1a1a2e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .payment-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #facc15, #eab308);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .payment-header p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .payment-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .payment-amount {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .amount-label {
+            color: #94a3b8;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .amount-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #facc15;
+        }
+
+        .payment-details {
+            display: grid;
+            gap: 16px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #94a3b8;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .payment-methods {
+            margin: 30px 0;
+        }
+
+        .methods-title {
+            color: #94a3b8;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        .method-options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .method-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .method-option:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .method-option.selected {
+            border-color: #facc15;
+            background: rgba(250, 204, 21, 0.1);
+        }
+
+        .method-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        .method-info {
+            flex: 1;
+        }
+
+        .method-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .method-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .payment-actions {
+            display: grid;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 16px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15, #eab308);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(250, 204, 21, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .btn-ghost:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .processing-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .processing-animation {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #facc15;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-screen, .failure-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-icon, .failure-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .success-icon {
+            color: #22c55e;
+        }
+
+        .failure-icon {
+            color: #ef4444;
+        }
+
+        .transaction-details {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .transaction-id {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <!-- Payment Selection Screen -->
+        <div id="paymentSelectionScreen">
+            <div class="payment-header">
+                <h1>Process Payment</h1>
+                <p>Complete the payment to approve work</p>
+            </div>
+
+            <div class="payment-card">
+                <div class="payment-amount">
+                    <div class="amount-label">Total Amount to Pay</div>
+                    <div class="amount-value" id="paymentAmount">₹0</div>
+                </div>
+
+                <div class="payment-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Worker</span>
+                        <span class="detail-value" id="workerName">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Job Title</span>
+                        <span class="detail-value" id="jobTitle">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Work Description</span>
+                        <span class="detail-value" id="workDescription">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Hours/Days</span>
+                        <span class="detail-value" id="workUnits">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Payment Type</span>
+                        <span class="detail-value" id="paymentType">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-methods">
+                <div class="methods-title">Select Payment Method</div>
+                <div class="method-options">
+                    <div class="method-option selected" data-method="escrow">
+                        <div class="method-icon">🏦</div>
+                        <div class="method-info">
+                            <div class="method-name">Escrow Payment</div>
+                            <div class="method-desc">Secure payment held in escrow</div>
+                        </div>
+                    </div>
+                    <div class="method-option" data-method="upi">
+                        <div class="method-icon">📱</div>
+                        <div class="method-info">
+                            <div class="method-name">UPI Transfer</div>
+                            <div class="method-desc">Instant bank transfer via UPI</div>
+                        </div>
+                    </div>
+                    <div class="method-option" data-method="bank">
+                        <div class="method-icon">🏛️</div>
+                        <div class="method-info">
+                            <div class="method-name">Bank Transfer</div>
+                            <div class="method-desc">Direct bank transfer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-actions">
+                <button class="btn btn-primary" id="processPaymentBtn">
+                    Process Payment ₹<span id="processAmount">0</span>
+                </button>
+                <button class="btn btn-ghost" id="cancelPaymentBtn">Cancel Payment</button>
+            </div>
+        </div>
+
+        <!-- Processing Screen -->
+        <div id="processingScreen" class="hidden">
+            <div class="processing-screen">
+                <div class="processing-animation"></div>
+                <h2>Processing Payment</h2>
+                <p>Please wait while we process your payment...</p>
+                <div class="transaction-details">
+                    <div><strong>Amount:</strong> ₹<span id="processingAmount">0</span></div>
+                    <div><strong>Method:</strong> <span id="processingMethod">-</span></div>
+                    <div><strong>Recipient:</strong> <span id="processingWorker">-</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Screen -->
+        <div id="successScreen" class="hidden">
+            <div class="success-screen">
+                <div class="success-icon">✅</div>
+                <h2>Payment Successful!</h2>
+                <p>Your payment has been processed successfully</p>
+                
+                <div class="transaction-details">
+                    <div><strong>Transaction ID:</strong></div>
+                    <div class="transaction-id" id="successTransactionId">-</div>
+                    <div><strong>Amount:</strong> ₹<span id="successAmount">0</span></div>
+                    <div><strong>Date & Time:</strong> <span id="successDateTime">-</span></div>
+                    <div><strong>Processing Fees:</strong> ₹<span id="successFees">0</span></div>
+                    <div><strong>Net Amount:</strong> ₹<span id="successNetAmount">0</span></div>
+                </div>
+
+                <div class="payment-actions">
+                    <button class="btn btn-primary" id="successContinueBtn">Continue to Dashboard</button>
+                    <button class="btn btn-ghost" id="successDetailsBtn">View Payment Details</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Failure Screen -->
+        <div id="failureScreen" class="hidden">
+            <div class="failure-screen">
+                <div class="failure-icon">❌</div>
+                <h2>Payment Failed</h2>
+                <p id="failureMessage">There was an error processing your payment</p>
+                
+                <div class="transaction-details">
+                    <div><strong>Error Details:</strong></div>
+                    <div id="errorDetails" style="color: #ef4444; margin-top: 8px;">-</div>
+                </div>
+
+                <div class="payment-actions">
+                    <button class="btn btn-primary" id="retryPaymentBtn">Try Again</button>
+                    <button class="btn btn-ghost" id="failureCancelBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="payment-processor.js"></script>
+</body>
+</html>

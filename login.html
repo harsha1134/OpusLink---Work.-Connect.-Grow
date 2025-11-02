@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpusLink | Login</title>
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="js/language-manager.js"></script>
+  <style>
+    /* Language Toggle Button - Fixed to viewport top right */
+    .language-toggle-fixed {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10000;
+    }
+
+    .btn-language {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 140px;
+        justify-content: center;
+    }
+
+    .btn-language:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+    }
+
+    .btn-language:active {
+        transform: translateY(0);
+    }
+
+    /* For mobile responsiveness */
+    @media (max-width: 768px) {
+        .language-toggle-fixed {
+            top: 15px;
+            right: 15px;
+        }
+        
+        .btn-language {
+            padding: 10px 16px;
+            font-size: 13px;
+            min-width: 120px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .language-toggle-fixed {
+            top: 10px;
+            right: 10px;
+        }
+        
+        .btn-language {
+            padding: 8px 14px;
+            font-size: 12px;
+            min-width: 110px;
+        }
+    }
+  </style>
+</head>
+<body>
+  <!-- Language Toggle Button - FIXED POSITION AT TOP RIGHT -->
+  <div class="language-toggle-fixed">
+    <button id="langToggleBtn" class="btn-language" onclick="toggleLanguage()">
+      🌐 <span data-translate="toggle_language">Toggle Telugu</span>
+    </button>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-left">
+      <h1 class="brand">Opus<span>Link</span></h1>
+      <p class="tagline" data-translate="welcome_back">Welcome back to your professional network</p>
+    </div>
+
+    <div class="auth-right">
+      <div class="form-box">
+        <h2 data-translate="login_to_opuslink">Login to OpusLink</h2>
+        <p class="subtitle" data-translate="enter_credentials">Enter your credentials to continue</p>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="loginEmail" data-translate="email_address">Email Address</label>
+            <input type="email" id="loginEmail" data-translate-placeholder="email_placeholder" placeholder="example@email.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="loginPassword" data-translate="password">Password</label>
+            <input type="password" id="loginPassword" data-translate-placeholder="password_placeholder" placeholder="********" required>
+          </div>
+
+          <div class="form-group">
+            <label for="loginRole" data-translate="i_am_a">I am a</label>
+            <select id="loginRole" required>
+              <option value="" data-translate="select_role">Select Role</option>
+              <option value="employer" data-translate="employer">Employer</option>
+              <option value="worker" data-translate="worker">Job Seeker</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn" data-translate="login">Login</button>
+
+          <div class="form-options">
+            <label class="checkbox">
+              <input type="checkbox" id="rememberMe">
+              <span data-translate="remember_me">Remember me</span>
+            </label>
+            <a href="#" class="forgot-password" data-translate="forgot_password">Forgot password?</a>
+          </div>
+        </form>
+
+        <div class="login-link">
+          <span data-translate="dont_have_account">Don't have an account?</span> <a href="sliding.html" data-translate="sign_up_here">Sign up here</a>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+<script>
+    // Add missing translations
+    if (window.languageManager) {
+      const additionalTranslations = {
+        'opuslink_login': 'ఓపస్ లింక్ | లాగిన్',
+        'welcome_back': 'మీ ప్రొఫెషనల్ నెట్వర్క్ కు తిరిగి స్వాగతం',
+        'login_to_opuslink': 'ఓపస్ లింక్ లోకి లాగిన్ అవ్వండి',
+        'enter_credentials': 'కొనసాగించడానికి మీ క్రెడెన్షియల్స్ నమోదు చేయండి',
+        'i_am_a': 'నేను ఒక',
+        'select_role': 'పాత్రను ఎంచుకోండి',
+        'remember_me': 'నన్ను గుర్తుంచుకో',
+        'forgot_password': 'పాస్వర్డ్ మర్చిపోయారా?',
+        'dont_have_account': 'ఖాతా లేదా?',
+        'sign_up_here': 'ఇక్కడ సైన్ అప్ చేయండి',
+        'demo_accounts': 'డెమో ఖాతాలు:',
+        'job_seeker': 'ఉద్యోగ అభ్యర్థి'
+      };
+      Object.assign(languageManager.teluguMap, additionalTranslations);
+    }
+
+    const form = document.getElementById('loginForm');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const role = document.getElementById('loginRole').value;
+
+      // Get users from localStorage
+      const users = JSON.parse(localStorage.getItem('opuslink_users') || '[]');
+      
+      // Find user with matching credentials
+      const user = users.find(u => 
+        u.email === email && 
+        u.password === password && 
+        u.role === role
+      );
+
+      if (user) {
+        // Store current user in sessionStorage
+        sessionStorage.setItem('currentUser', JSON.stringify(user));
+        
+        // ✅ CHECK VERIFICATION STATUS
+        if (user.isVerified === true) {
+          // User is verified - redirect to dashboard
+          if (languageManager.getCurrentLanguage() === 'te') {
+            alert(`✅ తిరిగి స్వాగతం, ${user.fullName}!`);
+          } else {
+            alert(`✅ Welcome back, ${user.fullName}!`);
+          }
+          
+          // Redirect to appropriate dashboard
+          if (role === 'employer') {
+            window.location.href = 'employer-dashboard.html';
+          } else {
+            window.location.href = 'worker-dashboard.html';
+          }
+        } else {
+          // User not verified - redirect to pending page
+          window.location.href = 'verification-pending.html';
+        }
+        
+      } else {
+        if (languageManager.getCurrentLanguage() === 'te') {
+          alert("❌ చెల్లని ఈమెయిల్, పాస్వర్డ్ లేదా పాత్ర. దయచేసి మళ్లీ ప్రయత్నించండి.");
+        } else {
+          alert("❌ Invalid email, password, or role. Please try again.");
+        }
+      }
+    });
+
+    // Initialize verification fields for existing users
+    function initializeVerificationFields() {
+      const users = JSON.parse(localStorage.getItem('opuslink_users') || '[]');
+      let updated = false;
+      
+      users.forEach(user => {
+        // If isVerified field doesn't exist, set it to false for existing users
+        if (user.isVerified === undefined) {
+          user.isVerified = false;
+          updated = true;
+        }
+      });
+      
+      if (updated) {
+        localStorage.setItem('opuslink_users', JSON.stringify(users));
+        console.log('Verification fields initialized for existing users');
+      }
+    }
+
+    // Check if sample data exists, if not initialize it
+    window.addEventListener('load', function() {
+      initializeVerificationFields();
+      
+      const users = JSON.parse(localStorage.getItem('opuslink_users') || '[]');
+      if (users.length === 0) {
+        // Initialize sample data if no users exist
+        initializeSampleData();
+      }
+    });
+
+    function initializeSampleData() {
+      const sampleUsers = [
+        {
+          id: '1',
+          fullName: 'Acme Corp Admin',
+          email: 'admin@acmecorp.com',
+          password: 'password123',
+          phone: '+91 9876543210',
+          role: 'employer',
+          isVerified: true,  // ✅ Pre-verified admin account
+          verificationStatus: 'approved',
+          verificationRequestedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
+          companyCategory: 'tech',
+          companySize: '51-200',
+          companyName: 'Acme Corporation',
+          industry: 'Technology & IT',
+          website: 'https://acmecorp.com',
+          location: 'Mumbai, Maharashtra',
+          description: 'Leading technology company building innovative solutions',
+          postedJobs: [],
+          hiredWorkers: []
+        },
+        {
+          id: '2', 
+          fullName: 'Ravi Kumar',
+          email: 'ravi@example.com',
+          password: 'password123',
+          phone: '+91 9876543211',
+          role: 'worker',
+          isVerified: true,  // ✅ Pre-verified worker account
+          verificationStatus: 'approved',
+          verificationRequestedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
+          jobCategory: 'tech',
+          experienceLevel: 'mid',
+          workType: 'fulltime',
+          expectedSalary: '45000',
+          skills: ['JavaScript', 'React', 'Node.js', 'MongoDB'],
+          education: 'B.Tech Computer Science',
+          preferredLocation: 'Bangalore, Karnataka',
+          bio: 'Full stack developer with 4 years of experience',
+          applications: []
+        }
+      ];
+
+      localStorage.setItem('opuslink_users', JSON.stringify(sampleUsers));
+      console.log('Sample data initialized with verification fields');
+    }
+  </script>
+</body>
+</html>

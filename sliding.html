@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-translate="select_your_role">Select Your Role - OpusLink</title>
+  <link rel="stylesheet" href="css/sliding.css">
+  <script src="js/language-manager.js"></script>
+  <style>
+    .language-toggle-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .btn-language {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-language:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Language Toggle Button -->
+    <div class="language-toggle-container">
+      <button id="langToggleBtn" class="btn-language" onclick="toggleLanguage()">
+        <span data-translate="toggle_language">Toggle Telugu</span>
+      </button>
+    </div>
+
+    <h1 class="title" data-translate="join_opuslink">Join <span>OpusLink</span></h1>
+    <p class="subtitle" data-translate="choose_role_continue">Choose your role to continue</p>
+
+    <div class="role-box">
+      <div class="role-card employer" onclick="selectRole('employer')">
+        <div class="icon">🏢</div>
+        <h2 data-translate="employer">Employer</h2>
+        <p data-translate="hire_skilled_professionals">Hire skilled professionals across all industries and grow your business.</p>
+        <div class="role-features">
+          <span data-translate="post_jobs">✓ Post Jobs</span>
+          <span data-translate="manage_applicants">✓ Manage Applicants</span>
+          <span data-translate="track_hiring">✓ Track Hiring</span>
+        </div>
+      </div>
+
+      <div class="role-card worker" onclick="selectRole('worker')">
+        <div class="icon">👨‍💼</div>
+        <h2 data-translate="job_seeker">Job Seeker</h2>
+        <p data-translate="find_jobs_showcase_skills">Find jobs, showcase your skills, and get hired across 15+ categories.</p>
+        <div class="role-features">
+          <span data-translate="browse_jobs">✓ Browse Jobs</span>
+          <span data-translate="apply_easily">✓ Apply Easily</span>
+          <span data-translate="track_applications">✓ Track Applications</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-prompt">
+      <span data-translate="already_have_account">Already have an account?</span> <a href="login.html" data-translate="login_here">Login here</a>
+    </div>
+  </div>
+
+  <script>
+    function selectRole(role){
+      // Store role in sessionStorage for registration flow
+      sessionStorage.setItem('selectedRole', role);
+      // redirect to account setup with role as query param
+      window.location.href = `account-setup.html?role=${role}`;
+    }
+
+    // Check if role came from direct link
+    const urlParams = new URLSearchParams(window.location.search);
+    const roleFromUrl = urlParams.get('role');
+    if (roleFromUrl && (roleFromUrl === 'employer' || roleFromUrl === 'worker')) {
+      selectRole(roleFromUrl);
+    }
+  </script>
+</body>
+</html>

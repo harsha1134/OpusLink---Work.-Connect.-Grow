@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title data-translate="opuslink_job_seeker_dashboard">OpusLink — Job Seeker Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/components.css">
+  <script src="js/language-manager.js"></script>
+</head>
+<body>
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">OL</div>
+        <div>
+          <div class="title">OpusLink</div>
+          <div class="subtitle" data-translate="job_seeker">Job Seeker</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#" class="nav-link active" data-section="job-feed">
+          <span>🔍</span> <span data-translate="find_jobs">Find Jobs</span>
+        </a>
+        <a href="#" class="nav-link" data-section="applications">
+          <span>📋</span> <span data-translate="my_applications">My Applications</span>
+        </a>
+        <a href="#" class="nav-link" data-section="job-offers">
+         <span>🎯</span> <span data-translate="job_offers">Job Offers</span>
+        </a>
+        <a href="#" class="nav-link" data-section="notifications">
+          <span>🔔</span> <span data-translate="notifications">Notifications</span>
+          <span class="notification-badge" id="sidebarNotificationCount" style="display: none">0</span>
+        </a>
+        <a href="#" class="nav-link" data-section="active-agreements">
+          <span>📝</span> <span data-translate="my_agreements">My Agreements</span>
+        </a>
+        <a href="#" class="nav-link" data-section="work-history">
+          <span>📊</span> <span data-translate="work_history">Work History</span>
+        </a>
+        <a href="#" class="nav-link" data-section="earnings">
+          <span>💰</span> <span data-translate="earnings">Earnings</span>
+        </a>
+        <!--<a href="#" class="nav-link" data-section="messages">
+          <span>💬</span> <span data-translate="messages">Messages</span>
+        </a> -->
+        <a href="#" class="nav-link" data-section="profile">
+          <span>👤</span> <span data-translate="profile">Profile</span>
+        </a>
+        <a href="#" class="nav-link" data-section="feedback">
+          <span>⭐</span> <span data-translate="feedback_reviews">Feedback & Reviews</span>
+        </a>
+        
+        <!-- Language Toggle Button in Sidebar -->
+        <a href="#" class="nav-link" id="langToggleBtn" onclick="toggleLanguage()">
+          <span>🌐</span> <span data-translate="toggle_language">Toggle Telugu</span>
+        </a>
+        
+        <a href="#" class="nav-link logout-btn">
+          <span>🚪</span> <span data-translate="logout">Logout</span>
+        </a>
+      </nav>
+
+      <div class="side-footer">
+        <div class="kv" data-translate="member_since">Member since <strong id="memberSince">2024</strong></div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main>
+  <!-- JOB FEED SECTION -->
+  <section id="job-feed" class="dashboard-section active">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <div class="section-title" data-translate="job_feed">Job Feed</div>
+        <div class="kv">
+          <span id="totalJobsCount">0</span> <span data-translate="jobs_found">jobs found</span> • 
+          <strong id="matchedJobs">0</strong> <span data-translate="match_your_profile">match your profile</span>
+        </div>
+      </div>
+
+      <!-- Enhanced Job Filters (moved here from topbar) -->
+      <div class="job-filters">
+        <div class="search-box">
+          <input type="text" id="jobSearch" data-translate-placeholder="search_jobs_placeholder" placeholder="🔍 Search jobs by title, company, skills, or location...">
+        </div>
+        
+        <div class="filter-row">
+          <select id="jobCategoryFilter" class="filter-select">
+            <option value="" data-translate="all_categories">All Categories</option>
+            <option value="Tech & Professional">Tech & Professional</option>
+            <option value="Corporate & Office">Corporate & Office</option>
+            <option value="Skilled Trades (Blue Collar)">Skilled Trades</option>
+            <option value="Daily Wage & Short-Term">Daily Wage & Short-Term</option>
+            <option value="Hospitality & Retail">Hospitality & Retail</option>
+            <option value="Freelance & Gigs">Freelance & Gigs</option>
+            <option value="Students & Internships">Students & Internships</option>
+            <option value="Household & Care Services">Household & Care</option>
+            <option value="Agriculture & Seasonal">Agriculture & Seasonal</option>
+            <option value="Healthcare & Medical">Healthcare & Medical</option>
+            <option value="Manufacturing & Industrial Labor">Manufacturing</option>
+            <option value="Government & Public Sector">Government</option>
+          </select>
+          
+          <!-- District Filter -->
+          <select id="jobDistrictFilter" class="filter-select">
+            <option value="" data-translate="all_districts">All Districts</option>
+            <option value="Anantapur">Anantapur</option>
+            <option value="Chittoor">Chittoor</option>
+            <option value="East Godavari">East Godavari</option>
+            <option value="Guntur">Guntur</option>
+            <option value="Kadapa">Kadapa</option>
+            <option value="Krishna">Krishna</option>
+            <option value="Kurnool">Kurnool</option>
+            <option value="Prakasam">Prakasam</option>
+            <option value="Nellore">Nellore</option>
+            <option value="Srikakulam">Srikakulam</option>
+            <option value="Visakhapatnam">Visakhapatnam</option>
+            <option value="Vizianagaram">Vizianagaram</option>
+            <option value="West Godavari">West Godavari</option>
+          </select>
+          
+          <!-- City Filter -->
+          <select id="jobCityFilter" class="filter-select" disabled>
+            <option value="" data-translate="all_cities">All Cities</option>
+          </select>
+          
+          <select id="jobTypeFilter" class="filter-select">
+            <option value="" data-translate="all_types">All Types</option>
+            <option value="fulltime">Full-Time</option>
+            <option value="parttime">Part-Time</option>
+            <option value="contract">Contract</option>
+            <option value="freelance">Freelance</option>
+            <option value="remote">Remote</option>
+          </select>
+          
+          <button id="clearFilters" class="btn btn-ghost" data-translate="clear_filters">Clear Filters</button>
+        </div>
+        
+        <div id="filterStatus" class="filter-status" data-translate="no_active_filters">
+          No active filters
+        </div>
+      </div>
+
+      <div id="jobFeed" class="job-list">
+        <div class="empty-state">
+          <div class="empty-state-icon">💼</div>
+          <h3 data-translate="no_jobs_available">No jobs available</h3>
+          <p data-translate="jobs_matching_profile">Jobs matching your profile will appear here</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+      <!-- APPLICATIONS SECTION -->
+      <section id="applications" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="my_applications">My Applications</div>
+          <div id="applications-content">
+            <!-- Applications will be loaded here -->
+          </div>
+        </div>
+      </section>
+      <!-- JOB OFFERS SECTION -->
+<section id="job-offers" class="dashboard-section">
+    <div class="card">
+        <div class="section-title">
+            <h2>🎯 <span data-translate="job_offers">Job Offers</span></h2>
+            <div class="section-subtitle" data-translate="direct_job_offers">Direct job offers from employers</div>
+        </div>
+        
+        <!-- Job Offers Stats -->
+        <div class="job-offers-stats" style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="background: var(--card); padding: 16px; border-radius: 8px; flex: 1; min-width: 150px;">
+                <div style="font-size: 0.9rem; color: var(--muted); margin-bottom: 4px;" data-translate="pending_offers">Pending Offers</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: #f59e0b;" id="pendingOffersCount">0</div>
+            </div>
+            <div style="background: var(--card); padding: 16px; border-radius: 8px; flex: 1; min-width: 150px;">
+                <div style="font-size: 0.9rem; color: var(--muted); margin-bottom: 4px;" data-translate="accepted">Accepted</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: #10B981;" id="acceptedOffersCount">0</div>
+            </div>
+            <div style="background: var(--card); padding: 16px; border-radius: 8px; flex: 1; min-width: 150px;">
+                <div style="font-size: 0.9rem; color: var(--muted); margin-bottom: 4px;" data-translate="expiring_soon">Expiring Soon</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: #ef4444;" id="expiringOffersCount">0</div>
+            </div>
+        </div>
+
+        <!-- Job Offers Filter -->
+        <div class="job-offers-filter" style="margin-bottom: 20px;">
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <select id="offerStatusFilter" class="filter-select" style="min-width: 150px;">
+                    <option value="pending" data-translate="pending_offers">Pending Offers</option>
+                    <option value="accepted" data-translate="accepted">Accepted</option>
+                    <option value="rejected" data-translate="declined">Declined</option>
+                    <option value="all" data-translate="all_offers">All Offers</option>
+                </select>
+                <button class="btn btn-ghost" onclick="workerDashboard.refreshJobOffers()">
+                    🔄 <span data-translate="refresh">Refresh</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Job Offers Container -->
+        <div id="jobOffersContainer">
+            <div class="empty-state">
+                <div class="empty-state-icon">🎯</div>
+                <h3 data-translate="no_job_offers_yet">No job offers yet</h3>
+                <p data-translate="job_offers_description">Job offers from employers will appear here when they send you direct offers</p>
+                <button class="btn btn-primary" onclick="workerDashboard.createTestOffer()" style="margin-top: 16px;">
+                    <span data-translate="create_test_offer">Create Test Offer</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+      <!-- SAVED JOBS SECTION -->
+      <section id="saved-jobs" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="saved_jobs">Saved Jobs</div>
+          <div id="savedJobsList" class="job-list">
+            <div class="empty-state">
+              <div class="empty-state-icon">⭐</div>
+              <h3 data-translate="no_saved_jobs">No saved jobs</h3>
+              <p data-translate="saved_jobs_appear_here">Jobs you save will appear here for quick access</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTIVE AGREEMENTS SECTION -->
+      <section id="active-agreements" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="my_agreements">My Work Agreements</div>
+          <div id="activeAgreementsContainer">
+            <!-- Active agreements will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- WORK HISTORY SECTION -->
+      <section id="work-history" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="work_history">Work History</div>
+          <div id="work-history-content">
+            <!-- Work history will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- EARNINGS OVERVIEW SECTION -->
+      <section id="earnings" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="earnings">Earnings Overview</div>
+          <div id="earnings-content">
+            <!-- Earnings will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- MESSAGES SECTION -->
+      <section id="messages" class="dashboard-section">
+        <div class="card">
+          <div class="section-title" data-translate="messages">Messages</div>
+          <div class="empty-state">
+            <div class="empty-state-icon">💬</div>
+            <h3 data-translate="no_messages_yet">No messages yet</h3>
+            <p data-translate="messages_description">Messages from employers will appear here</p>
+          </div>
+        </div>
+      </section>
+
+<!-- PROFILE SECTION -->
+<section id="profile" class="dashboard-section">
+  <div class="card">
+    <div class="section-title" data-translate="worker_profile">Worker Profile</div>
+    
+    <!-- Verification Status -->
+    <div id="verification-status-container" style="margin-bottom: 24px;">
+      <!-- Verification status will be displayed here -->
+    </div>
+    
+    <!-- Profile Picture Section -->
+    <div class="profile-picture-card" style="margin-bottom: 24px;">
+      <h3 style="color: #fff; margin-bottom: 16px; font-size: 1.1rem; font-weight: 600;" data-translate="profile_picture">Profile Picture</h3>
+      <div class="profile-picture-content">
+        <div class="profile-picture-preview" id="workerProfilePicturePreview">
+          <!-- Profile picture will be inserted here -->
+        </div>
+        <div class="profile-picture-controls">
+          <div class="upload-buttons">
+            <input type="file" id="workerProfilePictureUpload" accept="image/*" class="file-input">
+            <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('workerProfilePictureUpload').click()">
+              <span data-translate="upload_picture">Upload Picture</span>
+            </button>
+            <button type="button" class="btn btn-ghost btn-sm" id="removeWorkerProfilePicture">
+              <span data-translate="remove">Remove</span>
+            </button>
+          </div>
+          <div class="upload-info">
+            <div id="workerProfilePictureLastUpdated" class="last-updated" data-translate="no_profile_picture">
+              No profile picture uploaded
+            </div>
+            <div class="file-requirements">
+              JPG, PNG or GIF (Max 2MB)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Profile Completion Card -->
+    <div class="profile-completion-card">
+      <div class="completion-header">
+        <h4 data-translate="profile_strength">Profile Strength</h4>
+        <span id="workerProfileCompletion" data-translate="profile_completion">Profile Completion: 0%</span>
+      </div>
+      <div class="progress-bar">
+        <div id="workerProfileProgressBar" class="progress-fill" style="width: 0%"></div>
+      </div>
+      <div id="workerProfileProgressText" class="progress-text">0% <span data-translate="complete">Complete</span></div>
+      
+      <div class="profile-tips">
+        <h5 data-translate="tips_improve_profile">Tips to improve your profile:</h5>
+        <ul id="workerProfileTipsList">
+          <!-- Tips will be populated by JavaScript -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- Document Upload Section -->
+    <div class="document-section" style="margin-bottom: 24px;">
+      <h4 style="color: #fff; margin-bottom: 16px; font-size: 1.1rem; font-weight: 600;" data-translate="verification_documents">Verification Documents</h4>
+      <div class="document-upload-area" id="workerDocumentUploadArea">
+        <div class="upload-placeholder">
+          <div class="upload-icon">📄</div>
+          <p data-translate="upload_aadhaar_pan_resume">Upload Aadhaar, PAN, Resume, or other verification documents</p>
+          <button class="btn btn-ghost" onclick="openWorkerDocumentUploadModal()">
+            <span data-translate="upload_document">Upload Document</span>
+          </button>
+        </div>
+      </div>
+      <div id="workerDocumentsList" class="documents-list">
+        <!-- Documents will be listed here -->
+      </div>
+    </div>
+
+    <!-- Profile Form -->
+    <form id="workerProfileForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label data-translate="full_name">Full Name</label>
+          <input type="text" id="workerFullName" required>
+        </div>
+        <div class="form-group">
+          <label data-translate="email">Email</label>
+          <input type="email" id="workerEmail" required>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label data-translate="phone_number">Phone Number</label>
+          <input type="tel" id="workerPhone" required>
+        </div>
+        <div class="form-group">
+          <label data-translate="job_category">Job Category</label>
+          <select id="workerJobCategory" required>
+            <option value="" data-translate="select_category">Select Category</option>
+            <option value="tech">Technology & IT</option>
+            <option value="construction">Construction</option>
+            <option value="manufacturing">Manufacturing</option>
+            <option value="hospitality">Hospitality</option>
+            <option value="retail">Retail</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="logistics">Logistics & Transport</option>
+            <option value="education">Education</option>
+            <option value="skilled-trades">Skilled Trades</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label data-translate="experience_level">Experience Level</label>
+          <select id="workerExperienceLevel" required>
+            <option value="" data-translate="select_experience">Select Experience</option>
+            <option value="entry">Entry Level (0-2 years)</option>
+            <option value="mid">Mid Level (3-5 years)</option>
+            <option value="senior">Senior Level (5+ years)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-translate="work_type">Work Type</label>
+          <select id="workerWorkType" required>
+            <option value="" data-translate="select_work_type">Select Work Type</option>
+            <option value="fulltime">Full-Time</option>
+            <option value="parttime">Part-Time</option>
+            <option value="contract">Contract</option>
+            <option value="freelance">Freelance</option>
+            <option value="remote">Remote</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label data-translate="expected_salary">Expected Salary (₹/month)</label>
+          <input type="number" id="workerExpectedSalary" data-translate-placeholder="expected_salary_placeholder" placeholder="e.g., 35000" required>
+        </div>
+        <div class="form-group">
+          <label data-translate="preferred_location">Preferred Location</label>
+          <input type="text" id="workerPreferredLocation" data-translate-placeholder="preferred_location_placeholder" placeholder="e.g., Bangalore, Karnataka" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label data-translate="skills">Skills</label>
+        <textarea id="workerSkills" rows="3" data-translate-placeholder="skills_placeholder" placeholder="List your skills (comma separated)..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label data-translate="education">Education</label>
+        <input type="text" id="workerEducation" data-translate-placeholder="education_placeholder" placeholder="e.g., Bachelor's Degree in Computer Science">
+      </div>
+
+      <div class="form-group">
+        <label data-translate="bio_about_me">Bio/About Me</label>
+        <textarea id="workerBio" rows="4" data-translate-placeholder="bio_placeholder" placeholder="Tell employers about yourself, your experience, and what you're looking for..."></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" data-translate="update_profile">Update Profile</button>
+        <button type="button" class="btn btn-ghost" onclick="workerDashboard.createCompleteWorkerProfile()">
+          <span data-translate="auto_fill_sample_data">Auto-fill Sample Data</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+      <!-- FEEDBACK & REPORTING SECTION -->
+<section id="feedback" class="dashboard-section">
+    <div class="card">
+        <div class="section-title">
+            <h2 data-translate="feedback_reviews">Feedback & Reviews</h2>
+            <div class="section-subtitle" data-translate="rate_users_feedback">Rate users and provide platform feedback</div>
+        </div>
+
+        <div class="feedback-type-selector">
+            <button class="feedback-tab active" data-form="pending-feedback">📝 <span data-translate="pending_feedback">Pending Feedback</span></button>
+            <button class="feedback-tab" data-form="given-feedback">⭐ <span data-translate="given_feedback">Given Feedback</span></button>
+            <button class="feedback-tab" data-form="received-feedback">📥 <span data-translate="received_feedback">Received Feedback</span></button>
+            <button class="feedback-tab" data-form="platform-feedback">🏢 <span data-translate="platform_feedback">Platform Feedback</span></button>
+            <button class="feedback-tab" data-form="report-issue">🚨 <span data-translate="report_issue">Report Issue</span></button>
+            <button class="feedback-tab" data-form="my-reports">📋 <span data-translate="my_reports">My Reports</span></button>
+        </div>
+
+        <!-- Pending Feedback -->
+        <div id="pending-feedback" class="feedback-form active">
+            <h4 data-translate="complete_your_feedback">Complete Your Feedback</h4>
+            <p class="form-description" data-translate="rate_users_description">Rate users you've worked with</p>
+            <div id="pendingFeedbackList" class="pending-list"></div>
+        </div>
+
+        <!-- Given Feedback History -->
+        <div id="given-feedback" class="feedback-form">
+            <h4 data-translate="your_feedback_history">Your Feedback History</h4>
+            <div id="givenFeedbackList" class="feedback-history"></div>
+        </div>
+
+        <!-- Received Feedback -->
+        <div id="received-feedback" class="feedback-form">
+            <h4 data-translate="feedback_received">Feedback Received</h4>
+            <div id="receivedFeedbackList" class="feedback-history"></div>
+        </div>
+
+        <!-- Platform Feedback Form -->
+        <div id="platform-feedback" class="feedback-form">
+            <h4 data-translate="platform_feedback">Platform Feedback</h4>
+            <p class="form-description" data-translate="help_improve_opuslink">Help us improve OpusLink by sharing your experience</p>
+            
+            <form id="platformFeedbackForm">
+                <div class="form-group">
+                    <label data-translate="feedback_type">Feedback Type *</label>
+                    <select id="platformFeedbackType" required>
+                        <option value="" data-translate="select_feedback_type">Select feedback type</option>
+                        <option value="general">General Feedback</option>
+                        <option value="feature_request">Feature Request</option>
+                        <option value="bug_report">Bug Report</option>
+                        <option value="ui_ux">UI/UX Suggestion</option>
+                        <option value="payment_issue">Payment System</option>
+                        <option value="customer_service">Customer Service</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label data-translate="overall_platform_rating">Overall Platform Rating *</label>
+                    <div class="rating-stars" id="platformRating" data-rating="0">
+                        <span class="rating-star" data-value="1">★</span>
+                        <span class="rating-star" data-value="2">★</span>
+                        <span class="rating-star" data-value="3">★</span>
+                        <span class="rating-star" data-value="4">★</span>
+                        <span class="rating-star" data-value="5">★</span>
+                    </div>
+                    <div class="rating-labels">
+                        <span data-translate="poor">Poor</span>
+                        <span data-translate="excellent">Excellent</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label data-translate="what_you_like">What do you like about OpusLink?</label>
+                    <textarea id="platformLikes" data-translate-placeholder="platform_likes_placeholder" placeholder="What features do you enjoy? What works well for you?" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label data-translate="what_can_improve">What can we improve? *</label>
+                    <textarea id="platformImprovements" data-translate-placeholder="platform_improvements_placeholder" placeholder="What challenges have you faced? What would make your experience better?" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label data-translate="would_you_recommend">Would you recommend OpusLink to others? *</label>
+                    <div class="recommendation-options">
+                        <label class="option-label">
+                            <input type="radio" name="recommend" value="yes" required> 
+                            <span class="radio-custom"></span>
+                            <span data-translate="yes_definitely">Yes, definitely</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="recommend" value="maybe"> 
+                            <span class="radio-custom"></span>
+                            <span data-translate="maybe_with_improvements">Maybe, with improvements</span>
+                        </label>
+                        <label class="option-label">
+                            <input type="radio" name="recommend" value="no"> 
+                            <span class="radio-custom"></span>
+                            <span data-translate="probably_not">Probably not</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label data-translate="additional_comments">Additional Comments</label>
+                    <textarea id="platformComments" data-translate-placeholder="platform_comments_placeholder" placeholder="Any other feedback, suggestions, or concerns?" rows="3"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" data-translate="submit_platform_feedback">Submit Platform Feedback</button>
+                    <button type="button" class="btn btn-ghost" onclick="FeedbackSystem.clearPlatformForm()" data-translate="clear_form">Clear Form</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Report Issue Form -->
+        <div id="report-issue" class="feedback-form">
+            <h4 data-translate="report_an_issue">Report an Issue</h4>
+            <p class="form-description" data-translate="report_issue_description">Report problematic users or serious platform issues</p>
+            <form id="reportForm">
+                <!-- Existing report form content -->
+            </form>
+        </div>
+
+        <!-- My Reports -->
+        <div id="my-reports" class="feedback-form">
+            <h4 data-translate="your_reports_feedback">Your Reports & Feedback</h4>
+            <div id="myReportsList" class="reports-list"></div>
+        </div>
+    </div>
+</section>
+
+<!-- NOTIFICATIONS SECTION -->
+<section id="notifications" class="dashboard-section">
+  <div class="card">
+    <div class="section-header">
+      <div class="section-title">
+        <h2>🔔 <span data-translate="notifications">Notifications</span></h2>
+        <div class="section-subtitle" data-translate="notifications_subtitle">Stay updated with your activities</div>
+      </div>
+    </div>
+    
+    <!-- Notification Stats -->
+    <div class="notification-stats">
+      <div class="stat-card">
+        <div class="stat-label" data-translate="unread_notifications">Unread</div>
+        <div class="stat-value unread-count" id="unreadNotificationsCount">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label" data-translate="total_notifications">Total</div>
+        <div class="stat-value total-count" id="totalNotificationsCount">0</div>
+      </div>
+    </div>
+
+    <!-- Notification Filters -->
+    <div class="notification-filters">
+      <div class="filter-controls">
+        <select id="notificationTypeFilter" class="filter-select">
+          <option value="all" data-translate="all_types">All Types</option>
+          <option value="application_received" data-translate="applications">Applications</option>
+          <option value="application_accepted" data-translate="job_offers">Job Offers</option>
+          <option value="payment_processed" data-translate="payments">Payments</option>
+          <option value="new_message" data-translate="messages">Messages</option>
+          <option value="agreement_created" data-translate="agreements">Agreements</option>
+          <option value="system_alert" data-translate="system">System</option>
+        </select>
+        <select id="notificationStatusFilter" class="filter-select">
+          <option value="all" data-translate="all_status">All Status</option>
+          <option value="unread" data-translate="unread">Unread</option>
+          <option value="read" data-translate="read">Read</option>
+        </select>
+        <div class="action-buttons">
+          <button class="btn btn-primary" onclick="workerDashboard.markAllNotificationsAsRead()">
+            <span data-translate="mark_all_read">Mark All as Read</span>
+          </button>
+          <button class="btn btn-ghost" onclick="workerDashboard.clearAllNotifications()">
+            <span data-translate="clear_all">Clear All</span>
+          </button>
+          <button class="btn btn-secondary" onclick="workerDashboard.createTestNotifications()">
+            <span data-translate="test_notifications">Test Notifications</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications Container -->
+    <div id="notificationsContainer" class="notifications-container">
+      <div class="empty-state">
+        <div class="empty-state-icon">🔔</div>
+        <h3 data-translate="no_notifications">No notifications</h3>
+        <p data-translate="notifications_will_appear_here">Notifications about your activities will appear here</p>
+      </div>
+    </div>
+  </div>
+</section>
+    </main>
+  </div>
+
+  
+
+  <!-- MODALS -->
+  <div id="jobModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 id="jobModalTitle" data-translate="job_details">Job Details</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div id="jobModalContent">
+        <!-- Job details will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <div id="applicationModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 data-translate="apply_for_job">Apply for Job</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div id="applicationModalContent">
+        <!-- Application form will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Document Upload Modal -->
+  <div id="documentUploadModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 data-translate="upload_verification_document">Upload Verification Document</h3>
+        <button class="modal-close" onclick="closeDocumentUploadModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label data-translate="document_type">Document Type</label>
+          <select id="documentType" class="form-control">
+            <option value="aadhaar">Aadhaar Card</option>
+            <option value="pan">PAN Card</option>
+            <option value="license">Driving License</option>
+            <option value="passport">Passport</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-translate="document_file">Document File</label>
+          <div class="file-upload-area" id="fileUploadArea">
+            <input type="file" id="documentFile" accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+            <div class="upload-placeholder" onclick="document.getElementById('documentFile').click()">
+              <div class="upload-icon">📁</div>
+              <p data-translate="click_select_file">Click to select file (PDF, JPG, PNG)</p>
+              <span class="file-size">Max size: 5MB</span>
+            </div>
+          </div>
+          <div id="selectedFileName" class="selected-file" style="display: none;"></div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="uploadDocument()" id="uploadDocumentBtn" disabled>
+          <span data-translate="upload_document">Upload Document</span>
+        </button>
+        <button class="btn btn-ghost" onclick="closeDocumentUploadModal()" data-translate="cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat System -->
+  <div id="chatSystem" class="chat-system">
+    <div id="chatsSidebar" class="chats-sidebar">
+      <div class="chats-header">
+        <h3 data-translate="messages">Messages</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeChatSystem()">✕</button>
+      </div>
+      <div class="chats-list" id="chatsList">
+        <!-- Chats will be loaded here -->
+      </div>
+    </div>
+
+    <div id="chatInterface" class="chat-interface" style="display: none;">
+      <div class="chat-header">
+        <button class="btn btn-ghost btn-sm" id="backToChats">← <span data-translate="back">Back</span></button>
+        <div class="chat-user-info">
+          <div class="chat-user-name" id="chatUserName">User Name</div>
+          <div class="chat-user-status" id="chatUserStatus">Online</div>
+        </div>
+      </div>
+      
+      <div class="chat-messages" id="chatMessages">
+        <!-- Messages will be loaded here -->
+      </div>
+      
+      <div class="chat-input-area">
+        <textarea id="messageInput" data-translate-placeholder="type_message_placeholder" placeholder="Type a message..." rows="1"></textarea>
+        <button class="btn btn-primary" id="sendMessageBtn" data-translate="send">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Toggle Button -->
+  <button class="chat-toggle-btn" onclick="toggleChatSystem()">💬</button>
+
+  <!-- Scripts - CORRECTED ORDER -->
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/storage-manager.js"></script>
+  <!--<script src="js/worker-generator.js"></script> -->
+  <script src="js/data-generator.js"></script>
+  <script src="js/notification-system.js"></script>
+  <script src="js/escrow-wallet.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/work-tracking.js"></script>
+  <script src="js/feedback.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>
+    // Add missing translations for dashboard
+    if (window.languageManager) {
+      const dashboardTranslations = {
+        'opuslink_job_seeker_dashboard': 'ఓపస్ లింక్ — ఉద్యోగ అభ్యర్థి డాష్బోర్డ్',
+        'member_since': 'సభ్యుడు నుండి',
+        'direct_job_offers': 'ఉద్యోగదాతల నుండి ప్రత్యక్ష ఉద్యోగ ఆఫర్లు',
+        'pending_offers': 'పెండింగ్ ఆఫర్లు',
+        'accepted': 'ఆమోదించబడింది',
+        'expiring_soon': 'త్వరలో గడువు ముగుస్తుంది',
+        'declined': 'తిరస్కరించబడింది',
+        'all_offers': 'అన్ని ఆఫర్లు',
+        'refresh': 'రిఫ్రెష్',
+        'create_test_offer': 'టెస్ట్ ఆఫర్ సృష్టించండి',
+        'no_job_offers_yet': 'ఇంకా ఉద్యోగ ఆఫర్లు లేవు',
+        'job_offers_description': 'ఉద్యోగదాతలు మీకు ప్రత్యక్ష ఆఫర్లు పంపినప్పుడు ఉద్యోగ ఆఫర్లు ఇక్కడ కనిపిస్తాయి',
+        'no_messages_yet': 'ఇంకా సందేశాలు లేవు',
+        'messages_description': 'ఉద్యోగదాతల నుండి సందేశాలు ఇక్కడ కనిపిస్తాయి',
+        'profile_picture': 'ప్రొఫైల్ పిక్చర్',
+        'upload_picture': 'పిక్చర్ అప్లోడ్ చేయండి',
+        'remove': 'తీసివేయండి',
+        'no_profile_picture': 'ప్రొఫైల్ పిక్చర్ అప్లోడ్ చేయబడలేదు',
+        'complete': 'పూర్తి',
+        'job_category': 'ఉద్యోగ వర్గం',
+        'work_type': 'పని రకం',
+        'rate_users_feedback': 'వినియోగదారులను రేట్ చేయండి మరియు ప్లాట్ఫారమ్ ఫీడ్బ్యాక్ అందించండి',
+        'pending_feedback': 'పెండింగ్ ఫీడ్బ్యాక్',
+        'given_feedback': 'ఇచ్చిన ఫీడ్బ్యాక్',
+        'received_feedback': 'అందిన ఫీడ్బ్యాక్',
+        'platform_feedback': 'ప్లాట్ఫారమ్ ఫీడ్బ్యాక్',
+        'report_issue': 'ఇష్యూ నివేదించండి',
+        'my_reports': 'నా నివేదికలు',
+        'complete_your_feedback': 'మీ ఫీడ్బ్యాక్ పూర్తి చేయండి',
+        'rate_users_description': 'మీరు పని చేసిన వినియోగదారులను రేట్ చేయండి',
+        'your_feedback_history': 'మీ ఫీడ్బ్యాక్ చరిత్ర',
+        'feedback_received': 'ఫీడ్బ్యాక్ అందింది',
+        'help_improve_opuslink': 'మీ అనుభవాన్ని పంచుకోవడం ద్వారా ఓపస్ లింక్ ను మెరుగుపరచడంలో మాకు సహాయపడండి',
+        'feedback_type': 'ఫీడ్బ్యాక్ రకం *',
+        'select_feedback_type': 'ఫీడ్బ్యాక్ రకాన్ని ఎంచుకోండి',
+        'overall_platform_rating': 'మొత్తం ప్లాట్ఫారమ్ రేటింగ్ *',
+        'poor': 'పేలవమైన',
+        'excellent': 'అద్భుతమైన',
+        'what_you_like': 'ఓపస్ లింక్ గురించి మీకు ఏమి నచ్చింది?',
+        'platform_likes_placeholder': 'మీరు ఏ ఫీచర్లను ఆస్వాదిస్తారు? మీకు ఏమి బాగా పని చేస్తుంది?',
+        'what_can_improve': 'మేము ఏమి మెరుగుపర్చగలం? *',
+        'platform_improvements_placeholder': 'మీరు ఏ సవాళ్లను ఎదుర్కొన్నారు? మీ అనుభవాన్ని ఏమి మెరుగుపరుస్తుంది?',
+        'would_you_recommend': 'మీరు ఇతరులకు ఓపస్ లింక్ ను సిఫారసు చేస్తారా? *',
+        'yes_definitely': 'అవును, ఖచ్చితంగా',
+        'maybe_with_improvements': 'బహుశా, మెరుగుపరచడంతో',
+        'probably_not': 'బహుశా కాదు',
+        'additional_comments': 'అదనపు వ్యాఖ్యలు',
+        'platform_comments_placeholder': 'ఏదైనా ఇతర ఫీడ్బ్యాక్, సూచనలు లేదా ఆందోళనలు?',
+        'submit_platform_feedback': 'ప్లాట్ఫారమ్ ఫీడ్బ్యాక్ సమర్పించండి',
+        'clear_form': 'ఫారమ్ క్లియర్ చేయండి',
+        'report_an_issue': 'ఒక సమస్యను నివేదించండి',
+        'report_issue_description': 'సమస్యాత్మక వినియోగదారులను లేదా తీవ్రమైన ప్లాట్ఫారమ్ సమస్యలను నివేదించండి',
+        'your_reports_feedback': 'మీ నివేదికలు & ఫీడ్బ్యాక్',
+        'job_details': 'ఉద్యోగ వివరాలు',
+        'apply_for_job': 'ఉద్యోగానికి దరఖాస్తు చేయండి',
+        'upload_verification_document': 'ధృవీకరణ డాక్యుమెంట్ అప్లోడ్ చేయండి',
+        'document_type': 'డాక్యుమెంట్ రకం',
+        'document_file': 'డాక్యుమెంట్ ఫైల్',
+        'click_select_file': 'ఫైల్ ఎంచుకోవడానికి క్లిక్ చేయండి (PDF, JPG, PNG)',
+        'cancel': 'రద్దు చేయండి',
+        'type_message_placeholder': 'సందేశం టైప్ చేయండి...',
+        'send': 'పంపండి'
+      };
+      Object.assign(languageManager.teluguMap, dashboardTranslations);
+    }
+
+    // Initialize worker dashboard - CORRECTED
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🚀 Initializing Worker Dashboard...');
+      
+      if (!OpusAuth.requireAuth()) return;
+
+      const currentUser = OpusAuth.getCurrentUser();
+      if (currentUser.role !== 'worker') {
+        OpusUtils.showNotification('Access denied. Job seeker dashboard only.', 'error');
+        setTimeout(() => window.location.href = 'login.html', 2000);
+        return;
+      }
+
+      // Initialize dashboard with new instance
+      window.workerDashboard = new WorkerDashboard();
+      workerDashboard.init();
+      
+      console.log('✅ Worker Dashboard initialized successfully');
+    });
+  </script>
+</body>
+</html>
